@@ -1,6 +1,8 @@
 package com.cms.cn.config;
 
+import com.cms.cn.constant.StaticConst;
 import com.cms.cn.filter.SessionControlFilter;
+import com.cms.cn.utils.AESUtils;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
@@ -36,9 +38,9 @@ public class ShiroConfig {
 
     private static final String CACHE_KEY = "shiro:cache:";
     private static final String SESSION_KEY = "shiro:session:";
-    private static final String NAME = "custom.name";
+    private static final String NAME = "Token";
     private static final String VALUE = "/";
-    private static final Integer expTime = 2592000;
+    private static final Integer expTime = -1;
 
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
@@ -151,17 +153,27 @@ public class ShiroConfig {
     public SessionManager sessionManager() {
         SessionManager sessionManager = new SessionManager();
         sessionManager.setSessionDAO(redisSessionDAO());
-        sessionManager.setSessionIdCookieEnabled(false);
+        //是否开启定时调度器进行检测过期session 默认为true
+        sessionManager.setSessionIdCookieEnabled(true);
         sessionManager.setSessionIdUrlRewritingEnabled(false);
+        //是否开启删除无效的session对象  默认为true
         sessionManager.setDeleteInvalidSessions(true);
         sessionManager.setSessionIdCookie(simpleCookie());
+
+        //全局会话超时时间（单位毫秒），默认30分钟  暂时设置为10秒钟 用来测试
+        sessionManager.setGlobalSessionTimeout(1800000);
+        //设置session失效的扫描时间, 清理用户直接关闭浏览器造成的孤立会话 默认为 1个小时
+        // 设置该属性 就不需要设置 ExecutorServiceSessionValidationScheduler 底层也是默认自动调用ExecutorServiceSessionValidationScheduler
+        // 暂时设置为 5秒 用来测试
+        sessionManager.setSessionValidationInterval(3600000);
         return sessionManager;
     }
 
     @Bean
     public SimpleCookie simpleCookie() {
-        SimpleCookie simpleCookie = new SimpleCookie("Token");
-        simpleCookie.setValue(VALUE);
+        SimpleCookie simpleCookie = new SimpleCookie();
+        simpleCookie.setName(NAME);
+        simpleCookie.setPath(VALUE);
         simpleCookie.setHttpOnly(true);
         //<!-- 记住我cookie生效时间30天 ,单位秒;-->
         simpleCookie.setMaxAge(expTime);
@@ -174,9 +186,11 @@ public class ShiroConfig {
      */
     public CookieRememberMeManager rememberMeManager(){
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
-        cookieRememberMeManager.setCookie(simpleCookie());
+        SimpleCookie simpleCookie = new SimpleCookie(StaticConst.REMEMBERME);
+        simpleCookie.setMaxAge(259200000);
+        cookieRememberMeManager.setCookie(simpleCookie);
         //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
-//        cookieRememberMeManager.setCipherKey(Base64.deFcode("3AvVhmFLUs0KTA3Kprsdag=="));
+        cookieRememberMeManager.setCipherKey(Base64.decode(AESUtils.encrypt(StaticConst.SECRETKEY, StaticConst.SECREKTEXT)));
         return cookieRememberMeManager;
     }
 
