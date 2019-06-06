@@ -1,6 +1,7 @@
 package com.cms.cn.service;
 
-import com.cms.cn.model.entity.SysUser;
+import com.cms.cn.model.Request.UserRequest;
+import com.cms.cn.model.Response.BaseResponse;
 
 
 /**
@@ -12,11 +13,7 @@ import com.cms.cn.model.entity.SysUser;
  **/
 public interface SysUserService {
 
-    public SysUser getUserByName(String name);
+    public BaseResponse getUserByName(UserRequest userRequest);
 
-
-    public SysUser getByOpenid(String openid);
-
-    public SysUser getByPhone(String phone);
-
+    public BaseResponse findList(UserRequest userRequest);
 }

@@ -9,26 +9,26 @@ import com.cms.cn.constant.ResultStatusCode;
  * @Date 2019/5/21 17:31
  * @Version 1.0
  **/
-public class Result {
+public class BaseResponse {
 
     private int code;		//返回的代码，0表示成功，其他表示失败
     private String msg;		//成功或失败时返回的错误信息
     private Object data;	//成功时返回的数据信息
-    public Result(int code, String msg, Object data){
+    public BaseResponse(int code, String msg, Object data){
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
-    public Result(ResultStatusCode resultStatusCode, Object data){
+    public BaseResponse(ResultStatusCode resultStatusCode, Object data){
         this(resultStatusCode.getCode(), resultStatusCode.getMsg(), data);
     }
 
-    public Result(int code, String msg){
+    public BaseResponse(int code, String msg){
         this(code, msg, null);
     }
 
-    public Result(ResultStatusCode resultStatusCode){
+    public BaseResponse(ResultStatusCode resultStatusCode){
         this(resultStatusCode, null);
     }
 

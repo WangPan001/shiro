@@ -1,7 +1,7 @@
 package com.cms.cn.exception;
 
 import com.cms.cn.constant.ResultStatusCode;
-import com.cms.cn.model.Response.Result;
+import com.cms.cn.model.Response.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.http.HttpStatus;
@@ -28,12 +28,12 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({HttpMessageNotReadableException.class, MissingServletRequestParameterException.class, BindException.class,
             ServletRequestBindingException.class, MethodArgumentNotValidException.class, ConstraintViolationException.class})
-    public Result handleHttpMessageNotReadableException(Exception e) {
+    public BaseResponse handleHttpMessageNotReadableException(Exception e) {
         log.error("参数解析失败", e);
         if (e instanceof BindException){
-            return new Result(ResultStatusCode.BAD_REQUEST.getCode(), ((BindException)e).getAllErrors().get(0).getDefaultMessage());
+            return new BaseResponse(ResultStatusCode.BAD_REQUEST.getCode(), ((BindException)e).getAllErrors().get(0).getDefaultMessage());
         }
-        return new Result(ResultStatusCode.BAD_REQUEST.getCode(), e.getMessage());
+        return new BaseResponse(ResultStatusCode.BAD_REQUEST.getCode(), e.getMessage());
     }
 
     /**
@@ -41,9 +41,9 @@ public class ExceptionAdvice {
      */
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public Result handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+    public BaseResponse handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         log.error("不支持当前请求方法", e);
-        return new Result(ResultStatusCode.METHOD_NOT_ALLOWED, null);
+        return new BaseResponse(ResultStatusCode.METHOD_NOT_ALLOWED, null);
     }
 
     /**
@@ -51,10 +51,10 @@ public class ExceptionAdvice {
      * @return
      */
     @ExceptionHandler(UnauthorizedException.class)
-    public Result unauthorizedException(UnauthorizedException e){
+    public BaseResponse unauthorizedException(UnauthorizedException e){
         log.error(e.getMessage(), e);
 
-        return new Result(ResultStatusCode.UNAUTHO_ERROR);
+        return new BaseResponse(ResultStatusCode.UNAUTHO_ERROR);
     }
 
     /**
@@ -64,9 +64,9 @@ public class ExceptionAdvice {
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public Result handleException(Exception e) {
+    public BaseResponse handleException(Exception e) {
         e.printStackTrace();
         log.error("服务运行异常", e);
-        return new Result(ResultStatusCode.SYSTEM_ERR, null);
+        return new BaseResponse(ResultStatusCode.SYSTEM_ERR, null);
     }
 }

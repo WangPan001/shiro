@@ -1,5 +1,6 @@
 package com.cms.cn.config;
 
+import com.cms.cn.dao.SysUserMapper;
 import com.cms.cn.model.entity.SysMenu;
 import com.cms.cn.model.entity.SysRole;
 import com.cms.cn.model.entity.SysUser;
@@ -8,23 +9,33 @@ import com.cms.cn.service.SysRoleService;
 import com.cms.cn.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.support.DefaultSubjectContext;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
 import java.util.List;
 
 @Slf4j
 public class ShiroRealm extends AuthorizingRealm {
     @Autowired
-    private SysUserService userService;
+    private SysUserService sysUserService;
     @Autowired
-    private SysRoleService roleService;
+    private SysRoleService sysRoleService;
     @Autowired
-    private SysMenuService menuService;
+    private SysMenuService sysMenuService;
+    @Autowired
+    private SysUserMapper sysUserMapper;
     /**
      * 认证信息.(身份验证) : Authentication 是用来验证用户身份
      *
@@ -35,13 +46,34 @@ public class ShiroRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
         String name = token.getUsername();
         // 从数据库获取对应用户名密码的用户
-        SysUser user = userService.getUserByName(name);
+        SysUser sysUser = new SysUser();
+        sysUser.setLoginName(name);
+        SysUser user = sysUserMapper.selectUser(sysUser);
         if (user != null) {
             // 用户为禁用状态
             if (user.getLoginFlag() != 1) {
                 throw new DisabledAccountException();
             }
             log.info("---------------- Shiro 凭证认证成功 ----------------------");
+            //单用户登陆
+            //处理session
+            DefaultWebSecurityManager securityManager = (DefaultWebSecurityManager)SecurityUtils.getSecurityManager();
+            DefaultWebSessionManager sessionManager = (DefaultWebSessionManager)securityManager.getSessionManager();
+            //获取当前已登录的用户session列表
+            Collection<Session> sessions = sessionManager.getSessionDAO().getActiveSessions();
+            SysUser temp;
+            for(Session session : sessions){
+                //清除该用户以前登录时保存的session，强制退出
+                Object attribute = session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+                if (attribute == null) {
+                    continue;
+                }
+
+                temp = (SysUser) ((SimplePrincipalCollection) attribute).getPrimaryPrincipal();
+                if(name.equals(temp.getLoginName())) {
+                    sessionManager.getSessionDAO().delete(session);
+                }
+            }
             SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                     user, //用户
                     user.getPassword(), //密码
@@ -63,17 +95,17 @@ public class ShiroRealm extends AuthorizingRealm {
         if (principal instanceof SysUser) {
             SysUser userLogin = (SysUser) principal;
             if(userLogin != null){
-                List<SysRole> roleList = roleService.findByUserid(userLogin.getId());
+                List<SysRole> roleList = sysRoleService.findByUserid(userLogin.getId());
                 if(CollectionUtils.isNotEmpty(roleList)){
                     for(SysRole role : roleList){
                         info.addRole(role.getRoleName());
 
-                        List<SysMenu> menuList = menuService.getAllMenuByRoleId(role.getId());
+                        List<SysMenu> menuList = null;//menuService.getAllMenuByRoleId(role.getId());
                         if(CollectionUtils.isNotEmpty(menuList)){
                             for (SysMenu menu : menuList){
-//                                if(StringUtils.isNoneBlank(menu.getPermission())){
-//                                    info.addStringPermission(menu.getPermission());
-//                                }
+                                if(StringUtils.isNoneBlank(menu.getPermission())){
+                                    info.addStringPermission(menu.getPermission());
+                                }
                             }
                         }
                     }

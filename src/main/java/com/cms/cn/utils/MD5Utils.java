@@ -9,7 +9,7 @@ import java.security.MessageDigest;
  * @Date 2019/5/21 17:28
  * @Version 1.0
  **/
-public class MD5Util {
+public class MD5Utils {
 
     public static String encrypt(String encryptStr) {
         MessageDigest md5;

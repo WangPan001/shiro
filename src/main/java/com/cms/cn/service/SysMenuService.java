@@ -1,8 +1,7 @@
 package com.cms.cn.service;
 
-import com.cms.cn.model.entity.SysMenu;
-
-import java.util.List;
+import com.cms.cn.model.Request.MenusRequest;
+import com.cms.cn.model.Response.BaseResponse;
 
 /**
  * @ClassName MenuService
@@ -13,6 +12,6 @@ import java.util.List;
  **/
 public interface SysMenuService {
 
-    public List<SysMenu> getAllMenuByRoleId(Integer roleId);
+    public BaseResponse getAllMenuByRoleId(MenusRequest menusRequest) throws Exception;
 
 }
