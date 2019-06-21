@@ -47,12 +47,37 @@
     on sm.menu_id = srm.menu_id
     left join sys_user su
     on srm.role_id = su.role_id
-    where 1=1
+    where 1=1 and sm.parent_menu_id = 0
     <if test="roleId != null and roleId != ''">
       and su.role_id = #{roleId}
     </if>
     <if test="userName != null and userName != ''">
       and su.login_name = #{userName}
+    </if>
+  </select>
+
+  <select id="getAllMenuByParentId" parameterType="com.cms.cn.model.Request.MenusRequest" resultType="com.cms.cn.model.Response.MenusResponse">
+    select
+    sm.parent_menu_id parentMenuId,
+    sm.menu_id menuId,
+    sm.menu_name menuName,
+    sm.permission permission,
+    sm.sort sort,
+    sm.href href,
+    sm.icon icon,
+    sm.is_show isShow,
+    sm.menu_type menuType,
+    sm.useable useable,
+    sm.create_by createBy,
+    sm.create_date createDate,
+    sm.update_by updateBy,
+    sm.update_date updateDate,
+    sm.remarks remarks,
+    sm.del_flag delFlag
+    from sys_menu sm
+    where 1=1
+    <if test="parentMenuId != null and parentMenuId != ''">
+      and sm.parent_menu_id = #{parentMenuId}
     </if>
   </select>
 </mapper>

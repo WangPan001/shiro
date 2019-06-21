@@ -18,4 +18,6 @@ public class MenusRequest implements Serializable {
 
     private String userName;
 
+    private String parentMenuId;
+
 }

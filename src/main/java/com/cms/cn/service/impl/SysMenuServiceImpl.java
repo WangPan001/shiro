@@ -30,10 +30,17 @@ public class SysMenuServiceImpl implements SysMenuService {
         ParamUtils.checkParam(menusRequest);
         List<MenusResponse> menusResponses = sysMenuMapper.getAllMenuByRoleId(menusRequest);
         if (menusResponses != null && menusResponses.size() > 0){
+            for (MenusResponse menusResponse : menusResponses){
+                MenusRequest request = new MenusRequest();
+                request.setParentMenuId(menusResponse.getMenuId());
+                List<MenusResponse> list = sysMenuMapper.getAllMenuByParentId(request);
+                menusResponse.setChildren(list);
+            }
             BaseResponse resultUtils = new BaseResponse(ResultStatusCode.OK.getCode(),
                     ResultStatusCode.OK.getMsg(), menusResponses);
             return resultUtils;
+        }else{
+            return new BaseResponse(ResultStatusCode.UNAUTHO_ERROR);
         }
-        return null;
     }
 }

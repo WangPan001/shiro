@@ -3,6 +3,7 @@ package com.cms.cn.model.Response;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @ClassName MenusResponse
@@ -44,4 +45,6 @@ public class MenusResponse implements Serializable {
     private String remarks;
 
     private String delFlag;
+
+    private List<MenusResponse> children;
 }

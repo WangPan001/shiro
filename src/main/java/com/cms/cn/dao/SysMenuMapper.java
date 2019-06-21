@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface SysMenuMapper {
     public List<MenusResponse> getAllMenuByRoleId(MenusRequest menusRequest);
+
+    public List<MenusResponse> getAllMenuByParentId(MenusRequest menusRequest);
 }
