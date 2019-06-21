@@ -62,41 +62,4 @@ public class VerificationCodeController {
 
         }
     }
-
-    /**
-     * 验证码
-     * @param request
-     * @param response
-     * @return
-     */
-    @RequestMapping("/checkImageCode")
-    public BaseResponse checkImageCode(HttpServletRequest request,
-                                       HttpServletResponse response, String captcha) {
-        // 验证验证码
-        String sessionCode = request.getSession().getAttribute("code").toString();
-        System.out.println(sessionCode);
-        if (captcha != null && !"".equals(captcha) && sessionCode != null && !"".equals(sessionCode)) {
-            if (!captcha.equalsIgnoreCase(sessionCode)) {
-                return new BaseResponse(ResultStatusCode.INVALID_CAPTCHA);
-            }else{
-                return new BaseResponse(ResultStatusCode.OK);
-            }
-        } else {
-            return new BaseResponse(ResultStatusCode.INVALID_CAPTCHA);
-        }
-    }
-
-    @RequestMapping(value="/getSessionId")
-    @ResponseBody
-    public String getSessionId(HttpServletRequest request){
-        request.getSession().removeAttribute("springboot");
-        System.out.println(request.getSession().getMaxInactiveInterval());
-        Object o = request.getSession().getAttribute("springboot");
-        if(o == null){
-            o = "spring boot 牛逼了!!!有端口"+request.getLocalPort()+"生成";
-            request.getSession().setAttribute("springboot", o);
-        }
-
-        return "端口=" + request.getLocalPort() +  " sessionId=" + request.getSession().getId() +"<br/>"+o;
-    }
 }

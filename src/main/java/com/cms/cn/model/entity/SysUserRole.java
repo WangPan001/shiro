@@ -1,6 +1,8 @@
 package com.cms.cn.model.entity;
 
-public class SysUserRole {
+import java.io.Serializable;
+
+public class SysUserRole implements Serializable {
     private Integer id;
 
     private String userId;

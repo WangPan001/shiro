@@ -18,11 +18,11 @@
     id, role_id, role_name, role_type, useable, create_by, create_date, update_by, update_date, 
     remarks, del_flag
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectRole" parameterType="com.cms.cn.model.Request.RoleRequest" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from sys_role
-    where id = #{id,jdbcType=INTEGER}
+    where role_id = #{roleId}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from sys_role

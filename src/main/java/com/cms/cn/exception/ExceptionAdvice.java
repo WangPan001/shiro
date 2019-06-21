@@ -3,6 +3,7 @@ package com.cms.cn.exception;
 import com.cms.cn.constant.ResultStatusCode;
 import com.cms.cn.model.Response.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -68,5 +69,16 @@ public class ExceptionAdvice {
         e.printStackTrace();
         log.error("服务运行异常", e);
         return new BaseResponse(ResultStatusCode.SYSTEM_ERR, null);
+    }
+
+    /**
+     * 500
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(AuthorizationException.class)
+    public BaseResponse handleAuthorizationException(AuthorizationException e) {
+        log.error(e.getMessage(), e);
+        return new BaseResponse(ResultStatusCode.UNAUTHO_ERROR, null);
     }
 }

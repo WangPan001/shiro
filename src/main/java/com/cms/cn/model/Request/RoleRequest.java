@@ -5,17 +5,14 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * @ClassName MenusRequest
+ * @ClassName RoleRequest
  * @Description Todo
  * @Author wangpan
- * @Date 2019/6/3 14:01
+ * @Date 2019/6/11 9:57
  * @Version 1.0
  **/
 @Data
-public class MenusRequest implements Serializable {
+public class RoleRequest implements Serializable {
 
     private String roleId;
-
-    private String userName;
-
 }

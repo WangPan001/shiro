@@ -1,8 +1,9 @@
 package com.cms.cn.model.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SysUser {
+public class SysUser implements Serializable {
     private Integer id;
 
     private String userId;

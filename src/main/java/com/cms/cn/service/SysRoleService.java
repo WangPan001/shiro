@@ -1,6 +1,7 @@
 package com.cms.cn.service;
 
-import com.cms.cn.model.entity.SysRole;
+import com.cms.cn.model.Request.RoleRequest;
+import com.cms.cn.model.Response.BaseResponse;
 
 import java.util.List;
 
@@ -14,6 +15,6 @@ import java.util.List;
 
 public interface SysRoleService {
 
-    public List<SysRole> findByUserid(Integer userId);
+    public BaseResponse findByUserid(RoleRequest roleRequest);
 
 }

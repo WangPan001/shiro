@@ -1,17 +1,20 @@
 package com.cms.cn.dao;
 
-import com.cms.cn.model.entity.SysUserRole;
+import com.cms.cn.model.Request.UserRoleRequest;
+import com.cms.cn.model.Response.UserRoleResponse;
+
+import java.util.List;
 
 public interface SysUserRoleMapper {
-    int deleteByPrimaryKey(Integer id);
+//    int deleteByPrimaryKey(Integer id);
+//
+//    int insert(SysUserRole record);
+//
+//    int insertSelective(SysUserRole record);
 
-    int insert(SysUserRole record);
+    List<UserRoleResponse> selectUserRoles(UserRoleRequest roleUserRequest);
 
-    int insertSelective(SysUserRole record);
-
-    SysUserRole selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(SysUserRole record);
-
-    int updateByPrimaryKey(SysUserRole record);
+//    int updateByPrimaryKeySelective(SysUserRole record);
+//
+//    int updateByPrimaryKey(SysUserRole record);
 }

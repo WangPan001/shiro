@@ -1,6 +1,8 @@
 package com.cms.cn.model.entity;
 
-public class SysRoleMenu {
+import java.io.Serializable;
+
+public class SysRoleMenu implements Serializable {
     private Integer id;
 
     private String roleId;

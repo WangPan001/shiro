@@ -22,7 +22,7 @@
     <!--<property name="LOG_PATH" value="${log.path}" />-->
     <springProperty scope="context" name="LOG_PATH" source="log.path"/>
     <!--设置系统日志目录-->
-    <property name="APPDIR" value="app-service" />
+    <property name="APPDIR" value="cms-service" />
 
     <!-- 日志记录器，日期滚动记录 -->
     <appender name="FILEERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">

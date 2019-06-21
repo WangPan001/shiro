@@ -53,4 +53,6 @@ public class UserResponse implements Serializable {
     private String remarks;
 
     private Integer delFlag;
+
+    private String token;
 }

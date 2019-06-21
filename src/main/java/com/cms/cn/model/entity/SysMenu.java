@@ -2,10 +2,11 @@ package com.cms.cn.model.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class SysMenu {
+public class SysMenu implements Serializable {
     private Integer id;
 
     private Integer parentMenuId;

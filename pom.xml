@@ -157,6 +157,7 @@
             <artifactId>pagehelper-spring-boot-autoconfigure</artifactId>
             <version>${pagehelper_boot.version}</version>
         </dependency>
+
     </dependencies>
 
     <build>

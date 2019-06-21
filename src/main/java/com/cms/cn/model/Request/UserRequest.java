@@ -20,6 +20,8 @@ public class UserRequest implements Serializable {
 
     private String password;
 
+    private String captcha;
+
     private Integer pageSize = 0;
 
     private Integer pageNum = 0;

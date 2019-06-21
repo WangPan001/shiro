@@ -24,7 +24,7 @@
     create_by, create_date, update_by, update_date, remarks, del_flag
   </sql>
 
-  <select id="getAllMenuByRoleId" parameterType="com.cms.cn.model.Request.MenusRequest" resultMap="com.cms.cn.model.Response.MenusResponse">
+  <select id="getAllMenuByRoleId" parameterType="com.cms.cn.model.Request.MenusRequest" resultType="com.cms.cn.model.Response.MenusResponse">
     select
     sm.parent_menu_id parentMenuId,
     sm.menu_id menuId,
@@ -44,6 +44,15 @@
     sm.del_flag delFlag
     from sys_menu sm
     left join sys_role_menu srm
-    where id = #{roleId}
+    on sm.menu_id = srm.menu_id
+    left join sys_user su
+    on srm.role_id = su.role_id
+    where 1=1
+    <if test="roleId != null and roleId != ''">
+      and su.role_id = #{roleId}
+    </if>
+    <if test="userName != null and userName != ''">
+      and su.login_name = #{userName}
+    </if>
   </select>
 </mapper>

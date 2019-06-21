@@ -3,6 +3,7 @@ package com.cms.cn.config;
 import com.cms.cn.constant.StaticConst;
 import com.cms.cn.filter.SessionControlFilter;
 import com.cms.cn.utils.AESUtils;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
@@ -65,9 +66,6 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/common/**", "anon");
 
         filterChainDefinitionMap.put("/getCode","anon");
-        filterChainDefinitionMap.put("/checkImageCode","anon");
-        filterChainDefinitionMap.put("/getSessionId","anon");
-
         // 静态资源
         filterChainDefinitionMap.put("/static/**", "anon");
         // 登录方法
@@ -263,5 +261,19 @@ public class ShiroConfig {
     @Bean
     public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
+    }
+
+    /**
+     * @Author wangpan
+     * @Description //凭证匹配器
+     * @Date 2019/6/10 11:51
+     * @Param
+     * @return
+     */
+    @Bean
+    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+        hashedCredentialsMatcher.setHashAlgorithmName("md5");
+        return hashedCredentialsMatcher;
     }
 }

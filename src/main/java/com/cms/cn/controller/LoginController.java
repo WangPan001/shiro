@@ -3,7 +3,12 @@ package com.cms.cn.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cms.cn.constant.ResultStatusCode;
+import com.cms.cn.model.Request.UserRequest;
 import com.cms.cn.model.Response.BaseResponse;
+import com.cms.cn.model.Response.UserResponse;
+import com.cms.cn.model.entity.SysUser;
+import com.cms.cn.utils.MD5Utils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -13,9 +18,8 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,41 +30,42 @@ import javax.servlet.http.HttpServletRequest;
  * @Date 2019/6/4 15:50
  * @Version 1.0
  **/
-@RestController
+@Controller
 @RequestMapping("/admin")
 public class LoginController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @RequestMapping("/login")
-    public BaseResponse login(HttpServletRequest request, String account, String password, String captcha){
+    @ResponseBody
+    public BaseResponse login(HttpServletRequest request, @RequestBody UserRequest userRequest){
         try {
-            String code = captcha;
             // 验证验证码
             Session session = SecurityUtils.getSubject().getSession();
             String sessionCode = String.valueOf(session.getAttribute(VerificationCodeController.KEY_CAPTCHA));
-            System.out.println(sessionCode);
-
-            if (code != null && !"".equals(code) && sessionCode != null && !"".equals(sessionCode)) {
-                if (!code.equalsIgnoreCase(sessionCode)) {
+            if (StringUtils.isNotBlank(userRequest.getCaptcha()) && StringUtils.isNotBlank(sessionCode)) {
+                if (!userRequest.getCaptcha().equalsIgnoreCase(sessionCode)) {
                     return new BaseResponse(ResultStatusCode.INVALID_CAPTCHA);
                 }
             } else {
                 return new BaseResponse(ResultStatusCode.INVALID_CAPTCHA);
             }
-            UsernamePasswordToken token = new UsernamePasswordToken(account, password);
+            UsernamePasswordToken token = new UsernamePasswordToken(userRequest.getLoginName(), MD5Utils.encrypt(userRequest.getPassword()));
             //登录不在该处处理，交由shiro处理
             Subject subject = SecurityUtils.getSubject();
             subject.login(token);
 
-            if (subject.isAuthenticated()) {
-                JSON json = new JSONObject();
-                ((JSONObject) json).put("token", subject.getSession().getId());
+            SysUser user = (SysUser) subject.getPrincipal();
 
-                return new BaseResponse(ResultStatusCode.OK, json);
+            if (subject.isAuthenticated()) {
+                UserResponse userResponse = new UserResponse();
+                userResponse.setToken(String.valueOf(subject.getSession().getId()));
+                userResponse.setRoleId(user.getRoleId());
+                return new BaseResponse(ResultStatusCode.OK, userResponse);
             }else{
                 return new BaseResponse(ResultStatusCode.SHIRO_ERROR);
             }
         }catch (IncorrectCredentialsException | UnknownAccountException e){
+            logger.error("错误e={}", e);
             return new BaseResponse(ResultStatusCode.NOT_EXIST_USER_OR_ERROR_PWD);
         }catch (LockedAccountException e){
             return new BaseResponse(ResultStatusCode.USER_FROZEN);

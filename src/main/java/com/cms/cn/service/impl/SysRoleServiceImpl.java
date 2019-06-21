@@ -1,9 +1,12 @@
 package com.cms.cn.service.impl;
 
-import com.cms.cn.model.entity.SysRole;
+import com.cms.cn.dao.SysRoleMapper;
+import com.cms.cn.model.Request.RoleRequest;
+import com.cms.cn.model.Response.BaseResponse;
 import com.cms.cn.service.SysRoleService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -15,8 +18,14 @@ import java.util.List;
  **/
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
+
+    @Resource
+    private SysRoleMapper sysRoleMapper;
+
     @Override
-    public List<SysRole> findByUserid(Integer userId) {
+    public BaseResponse findByUserid(RoleRequest roleRequest) {
+
+        sysRoleMapper.selectRole(roleRequest);
         return null;
     }
 }
