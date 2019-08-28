@@ -31,7 +31,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public BaseResponse getUserByName(UserRequest userRequest) {
         if (userRequest != null){
-            SysUser sysUser = sysUserMapper.selectUser(JSONObject.parseObject(JSONObject.toJSONString(userRequest), SysUser.class));
+            UserResponse sysUser = sysUserMapper.selectUser(JSONObject.parseObject(JSONObject.toJSONString(userRequest), SysUser.class));
             if (sysUser != null){
                 UserResponse userResponse = JSONObject.parseObject(JSONObject.toJSONString(sysUser), UserResponse.class);
                 BaseResponse resultUtils = new BaseResponse(ResultStatusCode.OK.getCode(),

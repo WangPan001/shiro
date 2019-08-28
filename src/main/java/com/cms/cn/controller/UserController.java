@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @Version 1.0
  **/
 @RestController
-@RequestMapping("/admin/user")
+@RequestMapping("user")
 public class UserController {
 
     @Autowired
     private SysUserService sysUserService;
 
-    @RequiresPermissions("sys:user:view")
-    @RequestMapping("findList")
+    @RequiresPermissions("sys:menu")
+    @RequestMapping("/findList")
     public BaseResponse findList(@RequestBody UserRequest userRequest){
         return sysUserService.findList(userRequest);
     }

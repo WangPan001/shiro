@@ -11,10 +11,10 @@
   </sql>
   <select id="selectUserRoles" parameterType="com.cms.cn.model.Request.UserRoleRequest" resultType="com.cms.cn.model.Response.UserRoleResponse">
     select 
-    sur.role_id roleId, sur.user_id userId,sr.role_name roleName
+    sur.role_id roleId, sur.user_id userId,sr.name roleName, sr.remark remark
     from sys_user_role sur
     left join sys_role sr
-    on sur.role_id = sr.role_id
+    on sur.role_id = sr.id
     where sur.user_id = #{userId}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

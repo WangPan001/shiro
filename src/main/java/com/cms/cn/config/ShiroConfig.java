@@ -70,6 +70,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/static/**", "anon");
         // 登录方法
         filterChainDefinitionMap.put("/admin/login*", "anon"); // 表示可以匿名访问
+        filterChainDefinitionMap.put("/admin/logout", "anon"); // 表示可以匿名访问
 
         //此处需要添加一个kickout，上面添加的自定义拦截器才能生效
         filterChainDefinitionMap.put("/admin/**", "authc,kickout");// 表示需要认证才可以访问

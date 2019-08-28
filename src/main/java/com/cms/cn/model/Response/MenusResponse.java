@@ -47,4 +47,6 @@ public class MenusResponse implements Serializable {
     private String delFlag;
 
     private List<MenusResponse> children;
+
+    private List<MenusResponse> permissions;
 }

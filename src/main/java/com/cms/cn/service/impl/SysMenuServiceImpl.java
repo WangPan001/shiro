@@ -33,8 +33,15 @@ public class SysMenuServiceImpl implements SysMenuService {
             for (MenusResponse menusResponse : menusResponses){
                 MenusRequest request = new MenusRequest();
                 request.setParentMenuId(menusResponse.getMenuId());
+                request.setType("1");
                 List<MenusResponse> list = sysMenuMapper.getAllMenuByParentId(request);
                 menusResponse.setChildren(list);
+                for (MenusResponse response : list){
+                    request.setParentMenuId(response.getMenuId());
+                    request.setType("2");
+                    List<MenusResponse> responses = sysMenuMapper.getAllMenuByParentId(request);
+                    response.setPermissions(responses);
+                }
             }
             BaseResponse resultUtils = new BaseResponse(ResultStatusCode.OK.getCode(),
                     ResultStatusCode.OK.getMsg(), menusResponses);

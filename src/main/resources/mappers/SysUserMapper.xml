@@ -1,53 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cms.cn.dao.SysUserMapper">
-  <resultMap id="BaseResultMap" type="com.cms.cn.model.entity.SysUser">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="VARCHAR" property="userId" />
-    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="role_id" jdbcType="VARCHAR" property="roleId" />
-    <result column="certificates_no" jdbcType="VARCHAR" property="certificatesNo" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="photo" jdbcType="VARCHAR" property="photo" />
-    <result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
-    <result column="login_date" jdbcType="TIMESTAMP" property="loginDate" />
-    <result column="login_channel" jdbcType="INTEGER" property="loginChannel" />
-    <result column="login_flag" jdbcType="INTEGER" property="loginFlag" />
-    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
-    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
-  </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, login_name, password, role_id, certificates_no, name, email, phone, 
-    photo, login_ip, login_date, login_channel, login_flag, create_by, create_date, update_by, 
-    update_date, remarks, del_flag
+    id, name, password, salt, email, mobile,
+    status, dept_id, create_by, create_time, last_update_by, last_update_time, del_flag
   </sql>
-  <select id="selectUser" parameterType="com.cms.cn.model.entity.SysUser" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from sys_user
+  <select id="selectUser" parameterType="com.cms.cn.model.entity.SysUser" resultType="com.cms.cn.model.Response.UserResponse">
+    select
+    su.id id,
+    su.NAME name,
+    su.PASSWORD password,
+    su.salt salt,
+    su.email email,
+    su.mobile mobile,
+    su.STATUS STATUS,
+    su.dept_id dept_id,
+    su.create_by create_by,
+    su.create_time create_time,
+    su.last_update_by last_update_by,
+    su.last_update_time last_update_time,
+    su.del_flag del_flag,
+    sur.role_id role_id
+    from sys_user su
+    left join sys_user_role sur
+    on su.id = sur.user_id
     where 1=1
-    <if test="loginName != null and loginName != ''">
-      and login_name = #{loginName}
+    <if test="name != null and name != ''">
+      and name = #{name}
     </if>
     <if test="password != null and password != ''">
       and password = #{password}
     </if>
-    <if test="phone != null and phone != ''">
-      and phone = #{phone}
+    <if test="mobile != null and mobile != ''">
+      and mobile = #{mobile}
     </if>
   </select>
 
-  <select id="findList" parameterType="com.cms.cn.model.Request.UserRequest" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from sys_user
+  <select id="findList" parameterType="com.cms.cn.model.Request.UserRequest" resultType="com.cms.cn.model.Response.UserResponse">
+    SELECT
+	su.id id,
+	su.`name` name,
+	su.email email,
+	su.mobile mobile,
+	su.`status` `status`,
+	su.dept_id dept_id,
+	sd.name dept_name,
+	sr.remark role_name
+    FROM
+        sys_user su
+    LEFT JOIN sys_dept sd
+    ON su.dept_id = sd.id
+    LEFT JOIN sys_user_role sur
+    ON su.id = sur.user_id
+    LEFT JOIN sys_role sr
+    ON sur.role_id = sr.id
   </select>
 
 </mapper>

@@ -1,13 +1,11 @@
 package com.cms.cn.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.cms.cn.constant.ResultStatusCode;
 import com.cms.cn.model.Request.UserRequest;
 import com.cms.cn.model.Response.BaseResponse;
 import com.cms.cn.model.Response.UserResponse;
 import com.cms.cn.model.entity.SysUser;
-import com.cms.cn.utils.MD5Utils;
+import com.cms.cn.utils.PasswordEncoderUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -49,17 +47,17 @@ public class LoginController {
             } else {
                 return new BaseResponse(ResultStatusCode.INVALID_CAPTCHA);
             }
-            UsernamePasswordToken token = new UsernamePasswordToken(userRequest.getLoginName(), MD5Utils.encrypt(userRequest.getPassword()));
+            UsernamePasswordToken token = new UsernamePasswordToken(userRequest.getLoginName(), userRequest.getPassword());
             //登录不在该处处理，交由shiro处理
             Subject subject = SecurityUtils.getSubject();
             subject.login(token);
 
-            SysUser user = (SysUser) subject.getPrincipal();
+            UserResponse user = (UserResponse) subject.getPrincipal();
 
             if (subject.isAuthenticated()) {
                 UserResponse userResponse = new UserResponse();
                 userResponse.setToken(String.valueOf(subject.getSession().getId()));
-                userResponse.setRoleId(user.getRoleId());
+                userResponse.setRole_id(user.getRole_id());
                 return new BaseResponse(ResultStatusCode.OK, userResponse);
             }else{
                 return new BaseResponse(ResultStatusCode.SHIRO_ERROR);
@@ -80,6 +78,7 @@ public class LoginController {
      * @return
      */
     @RequestMapping("/logout")
+    @ResponseBody
     public BaseResponse logout(){
         SecurityUtils.getSubject().logout();
         return new BaseResponse(ResultStatusCode.OK);

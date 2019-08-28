@@ -19,4 +19,6 @@ public class UserRoleResponse implements Serializable {
     private String roleId;
 
     private String roleName;
+
+    private String remark;
 }

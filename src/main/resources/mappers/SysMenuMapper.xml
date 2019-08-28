@@ -1,83 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cms.cn.dao.SysMenuMapper">
-  <resultMap id="BaseResultMap" type="com.cms.cn.model.entity.SysMenu">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="parent_menu_id" jdbcType="INTEGER" property="parentMenuId" />
-    <result column="menu_id" jdbcType="INTEGER" property="menuId" />
-    <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
-    <result column="sort" jdbcType="INTEGER" property="sort" />
-    <result column="href" jdbcType="VARCHAR" property="href" />
-    <result column="icon" jdbcType="VARCHAR" property="icon" />
-    <result column="is_show" jdbcType="INTEGER" property="isShow" />
-    <result column="menu_type" jdbcType="VARCHAR" property="menuType" />
-    <result column="useable" jdbcType="INTEGER" property="useable" />
-    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
-    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, parent_menu_id, menu_id, menu_name, sort, href, icon, is_show, menu_type, useable, 
-    create_by, create_date, update_by, update_date, remarks, del_flag
-  </sql>
 
   <select id="getAllMenuByRoleId" parameterType="com.cms.cn.model.Request.MenusRequest" resultType="com.cms.cn.model.Response.MenusResponse">
     select
-    sm.parent_menu_id parentMenuId,
-    sm.menu_id menuId,
-    sm.menu_name menuName,
-    sm.permission permission,
+    sm.parent_id parentMenuId,
+    sm.id menuId,
+    sm.name menuName,
+    sm.perms permission,
     sm.sort sort,
-    sm.href href,
+    sm.url href,
     sm.icon icon,
     sm.is_show isShow,
-    sm.menu_type menuType,
+    sm.type menuType,
     sm.useable useable,
     sm.create_by createBy,
-    sm.create_date createDate,
-    sm.update_by updateBy,
-    sm.update_date updateDate,
+    sm.create_time createDate,
+    sm.last_update_by updateBy,
+    sm.last_update_time updateDate,
     sm.remarks remarks,
     sm.del_flag delFlag
     from sys_menu sm
-    left join sys_role_menu srm
-    on sm.menu_id = srm.menu_id
-    left join sys_user su
-    on srm.role_id = su.role_id
-    where 1=1 and sm.parent_menu_id = 0
-    <if test="roleId != null and roleId != ''">
-      and su.role_id = #{roleId}
-    </if>
-    <if test="userName != null and userName != ''">
-      and su.login_name = #{userName}
-    </if>
+    LEFT JOIN sys_role_menu srm
+    ON sm.id = srm.menu_id
+    LEFT JOIN sys_user_role sur
+    ON srm.role_id = sur.role_id
+    LEFT JOIN sys_user su
+    ON sur.user_id = su.id
+    where 1=1 and sm.parent_id = 0
+    and sur.role_id = #{roleId}
+    and su.name = #{userName}
   </select>
 
   <select id="getAllMenuByParentId" parameterType="com.cms.cn.model.Request.MenusRequest" resultType="com.cms.cn.model.Response.MenusResponse">
     select
-    sm.parent_menu_id parentMenuId,
-    sm.menu_id menuId,
-    sm.menu_name menuName,
-    sm.permission permission,
+    sm.parent_id parentMenuId,
+    sm.id menuId,
+    sm.name menuName,
+    sm.perms permission,
     sm.sort sort,
-    sm.href href,
+    sm.url href,
     sm.icon icon,
     sm.is_show isShow,
-    sm.menu_type menuType,
+    sm.type menuType,
     sm.useable useable,
     sm.create_by createBy,
-    sm.create_date createDate,
-    sm.update_by updateBy,
-    sm.update_date updateDate,
+    sm.create_time createDate,
+    sm.last_update_by updateBy,
+    sm.last_update_time updateDate,
     sm.remarks remarks,
     sm.del_flag delFlag
     from sys_menu sm
     where 1=1
     <if test="parentMenuId != null and parentMenuId != ''">
-      and sm.parent_menu_id = #{parentMenuId}
+      and sm.parent_id = #{parentMenuId}
+    </if>
+    <if test="type != null and type != ''">
+      and sm.type = #{type}
     </if>
   </select>
 </mapper>

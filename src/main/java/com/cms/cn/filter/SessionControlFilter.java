@@ -1,6 +1,7 @@
 package com.cms.cn.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.cms.cn.model.Response.UserResponse;
 import com.cms.cn.model.entity.SysUser;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
@@ -46,8 +47,8 @@ public class SessionControlFilter extends AccessControlFilter {
 
 
         Session session = subject.getSession();
-        SysUser user = (SysUser) subject.getPrincipal();
-        String username = user.getLoginName();
+        UserResponse user = (UserResponse) subject.getPrincipal();
+        String username = user.getName();
         Serializable sessionId = session.getId();
 
         //读取缓存   没有就存入

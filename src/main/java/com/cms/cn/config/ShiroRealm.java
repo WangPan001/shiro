@@ -6,15 +6,11 @@ import com.cms.cn.dao.SysUserRoleMapper;
 import com.cms.cn.model.Request.MenusRequest;
 import com.cms.cn.model.Request.UserRoleRequest;
 import com.cms.cn.model.Response.MenusResponse;
+import com.cms.cn.model.Response.UserResponse;
 import com.cms.cn.model.Response.UserRoleResponse;
-import com.cms.cn.model.entity.SysMenu;
-import com.cms.cn.model.entity.SysRole;
 import com.cms.cn.model.entity.SysUser;
-import com.cms.cn.model.entity.SysUserRole;
-import com.cms.cn.service.SysMenuService;
-import com.cms.cn.service.SysRoleService;
-import com.cms.cn.service.SysUserService;
-import com.cms.cn.utils.MD5Utils;
+import com.cms.cn.utils.EncryptUtils;
+import com.cms.cn.utils.PasswordEncoderUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +25,6 @@ import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 import java.util.Collection;
@@ -55,14 +50,16 @@ public class ShiroRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
         String name = token.getUsername();
         String password = String.valueOf(token.getPassword());
+        String salt = EncryptUtils.MD5(name, password);
+        PasswordEncoderUtils passwordEncoderUtils = new PasswordEncoderUtils(salt);
         // 从数据库获取对应用户名密码的用户
         SysUser sysUser = new SysUser();
-        sysUser.setLoginName(name);
-        sysUser.setPassword(password);
-        SysUser user = sysUserMapper.selectUser(sysUser);
+        sysUser.setName(name);
+        sysUser.setPassword(passwordEncoderUtils.encode(password));
+        UserResponse user = sysUserMapper.selectUser(sysUser);
         if (user != null) {
             // 用户为禁用状态
-            if (user.getLoginFlag() != 1) {
+            if ("0".equals(user.getStatus())){
                 throw new DisabledAccountException();
             }
             log.info("---------------- Shiro 凭证认证成功 ----------------------");
@@ -72,7 +69,7 @@ public class ShiroRealm extends AuthorizingRealm {
             DefaultWebSessionManager sessionManager = (DefaultWebSessionManager)securityManager.getSessionManager();
             //获取当前已登录的用户session列表
             Collection<Session> sessions = sessionManager.getSessionDAO().getActiveSessions();
-            SysUser temp;
+            UserResponse temp;
             for(Session session : sessions){
                 //清除该用户以前登录时保存的session，强制退出
                 Object attribute = session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
@@ -80,14 +77,15 @@ public class ShiroRealm extends AuthorizingRealm {
                     continue;
                 }
 
-                temp = (SysUser) ((SimplePrincipalCollection) attribute).getPrimaryPrincipal();
-                if(name.equals(temp.getLoginName())) {
+                temp = (UserResponse) ((SimplePrincipalCollection) attribute).getPrimaryPrincipal();
+                if(name.equals(temp.getName())) {
                     sessionManager.getSessionDAO().delete(session);
                 }
             }
+            PasswordEncoderUtils encoderMd5 = new PasswordEncoderUtils(user.getSalt());
             SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                     user, //用户
-                    MD5Utils.encrypt(user.getPassword()), //密码
+                    user.getPassword(), //密码
                     getName()  //realm name
             );
             return authenticationInfo;
@@ -103,17 +101,18 @@ public class ShiroRealm extends AuthorizingRealm {
         log.info("---------------- 执行 Shiro 权限获取 ---------------------");
         Object principal = principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        if (principal instanceof SysUser) {
-            SysUser userLogin = (SysUser) principal;
+        if (principal instanceof UserResponse) {
+            UserResponse userLogin = (UserResponse) principal;
             if(userLogin != null){
                 UserRoleRequest roleUserRequest = new UserRoleRequest();
-                roleUserRequest.setUserId(userLogin.getUserId());
+                roleUserRequest.setUserId(userLogin.getId());
                 List<UserRoleResponse> userRoleResponses = sysUserRoleMapper.selectUserRoles(roleUserRequest);
                 if(CollectionUtils.isNotEmpty(userRoleResponses)){
                     for(UserRoleResponse userRoleResponse : userRoleResponses){
                         info.addRole(userRoleResponse.getRoleName());
                         MenusRequest menusRequest = new MenusRequest();
                         menusRequest.setRoleId(userRoleResponse.getRoleId());
+                        menusRequest.setUserName(userLogin.getName());
                         List<MenusResponse> menuList = sysMenuMapper.getAllMenuByRoleId(menusRequest);
                         if(CollectionUtils.isNotEmpty(menuList)){
                             for (MenusResponse menu : menuList){

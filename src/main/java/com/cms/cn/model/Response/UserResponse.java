@@ -14,45 +14,39 @@ import java.util.Date;
  **/
 @Data
 public class UserResponse implements Serializable {
-    private Integer id;
-
-    private String userId;
-
-    private String loginName;
-
-    private String password;
-
-    private String roleId;
-
-    private String certificatesNo;
+    private String id;
 
     private String name;
 
+    private String password;
+
+    private String salt;
+
     private String email;
 
-    private String phone;
+    private String mobile;
 
-    private String photo;
+    private String status;
 
-    private String loginIp;
+    private String dept_id;
 
-    private Date loginDate;
+    private String create_by;
 
-    private Integer loginChannel;
+    private String create_time;
 
-    private Integer loginFlag;
+    private String last_update_by;
 
-    private String createBy;
+    private String last_update_time;
 
-    private Date createDate;
+    private String del_flag;
 
-    private String updateBy;
+    private String dept_name;
 
-    private Date updateDate;
+    private String role_id;
 
-    private String remarks;
-
-    private Integer delFlag;
+    private String role_name;
 
     private String token;
+
+
 }
