@@ -1,6 +1,7 @@
 package com.cms.cn.controller;
 
 import com.cms.cn.constant.ResultStatusCode;
+import com.cms.cn.model.Request.MenuRequest;
 import com.cms.cn.model.Request.MenusRequest;
 import com.cms.cn.model.Response.BaseResponse;
 import com.cms.cn.service.SysMenuService;
@@ -32,6 +33,30 @@ public class MenuController {
         try {
             BaseResponse baseResponse = sysMenuService.getAllMenuByRoleId(menusRequest);
             return new BaseResponse(ResultStatusCode.OK, baseResponse);
+        } catch (Exception e) {
+            return new BaseResponse(ResultStatusCode.SYSTEM_ERR, e);
+        }
+    }
+
+    @RequiresPermissions("sys:menu")
+    @ResponseBody
+    @RequestMapping("/findMenuTree")
+    public BaseResponse findMenuTree(@RequestBody MenusRequest menusRequest){
+        try {
+            BaseResponse baseResponse = sysMenuService.getAllMenus(menusRequest);
+            return new BaseResponse(ResultStatusCode.OK, baseResponse);
+        } catch (Exception e) {
+            return new BaseResponse(ResultStatusCode.SYSTEM_ERR, e);
+        }
+    }
+
+    @RequiresPermissions("sys:menu:add")
+    @ResponseBody
+    @RequestMapping("/addMenu")
+    public BaseResponse addMenu(@RequestBody MenuRequest menuRequest){
+        try {
+            BaseResponse baseResponse = sysMenuService.addMenu(menuRequest);
+            return baseResponse;
         } catch (Exception e) {
             return new BaseResponse(ResultStatusCode.SYSTEM_ERR, e);
         }

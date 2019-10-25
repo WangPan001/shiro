@@ -1,5 +1,6 @@
 package com.cms.cn.service;
 
+import com.cms.cn.model.Request.MenuRequest;
 import com.cms.cn.model.Request.MenusRequest;
 import com.cms.cn.model.Response.BaseResponse;
 
@@ -12,6 +13,9 @@ import com.cms.cn.model.Response.BaseResponse;
  **/
 public interface SysMenuService {
 
-    public BaseResponse getAllMenuByRoleId(MenusRequest menusRequest) throws Exception;
+    BaseResponse getAllMenuByRoleId(MenusRequest menusRequest) throws Exception;
 
+    BaseResponse getAllMenus(MenusRequest menusRequest);
+
+    BaseResponse addMenu(MenuRequest menuRequest);
 }

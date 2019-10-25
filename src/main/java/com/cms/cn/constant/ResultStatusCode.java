@@ -27,7 +27,8 @@ public enum ResultStatusCode {
     UPLOAD_ERROR(20000, "上传文件异常"),
     INVALID_CAPTCHA(30005, "无效的验证码"),
     USER_FROZEN(40000, "该用户已被冻结"),
-    NO_DATA(50000, "查无此结果");
+    NO_DATA(50000, "查无此结果"),
+    OPRATE_FAILD(50001, "操作失败");
 
     private int code;
     private String msg;

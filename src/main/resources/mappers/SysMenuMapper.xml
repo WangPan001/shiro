@@ -59,4 +59,28 @@
       and sm.type = #{type}
     </if>
   </select>
+
+  <insert id="addMenu" parameterType="com.cms.cn.model.Request.MenuRequest">
+    insert into sys_menu(
+      name, parent_id, usr, perms, is_show, sort, type, icon,
+      order_num, create_by, create_time, last_update_by,
+      last_update_time, remarks, del_flag
+    )values (
+      #{name},
+      #{parent_id},
+      #{usr},
+      #{perms},
+      #{is_show},
+      #{sort},
+      #{type},
+      #{icon},
+      #{order_num},
+      #{create_by},
+      now(),
+      #{last_update_by},
+      now(),
+      #{remarks},
+      #{del_flag}
+    )
+  </insert>
 </mapper>

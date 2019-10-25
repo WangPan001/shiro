@@ -2,6 +2,7 @@ package com.cms.cn.service.impl;
 
 import com.cms.cn.constant.ResultStatusCode;
 import com.cms.cn.dao.SysMenuMapper;
+import com.cms.cn.model.Request.MenuRequest;
 import com.cms.cn.model.Request.MenusRequest;
 import com.cms.cn.model.Response.MenusResponse;
 import com.cms.cn.service.SysMenuService;
@@ -48,6 +49,49 @@ public class SysMenuServiceImpl implements SysMenuService {
             return resultUtils;
         }else{
             return new BaseResponse(ResultStatusCode.UNAUTHO_ERROR);
+        }
+    }
+
+    @Override
+    public BaseResponse getAllMenus(MenusRequest menusRequest) {
+        menusRequest.setParentMenuId("0");
+        List<MenusResponse> menusResponses = sysMenuMapper.getAllMenuByParentId(menusRequest);
+        if (menusResponses != null && menusResponses.size() > 0){
+            for (MenusResponse menusResponse : menusResponses){
+                menusRequest.setParentMenuId(menusResponse.getMenuId());
+                List<MenusResponse> menusResponsesTwo = sysMenuMapper.getAllMenuByParentId(menusRequest);
+                if (menusResponsesTwo != null && menusResponsesTwo.size() > 0){
+                    menusResponse.setChildren(menusResponsesTwo);
+                    for (MenusResponse menusResponse1 : menusResponsesTwo){
+                        menusResponse1.setParentName(menusResponse.getMenuName());
+                        menusRequest.setParentMenuId(menusResponse1.getMenuId());
+                        List<MenusResponse> menusResponsesThree = sysMenuMapper.getAllMenuByParentId(menusRequest);
+                        if (menusResponsesThree != null && menusResponsesThree.size() > 0 ){
+                            menusResponse1.setChildren(menusResponsesThree);
+                            for (MenusResponse menusResponse2 : menusResponsesThree){
+                                menusResponse2.setParentName(menusResponse1.getMenuName());
+                            }
+                        }
+                    }
+                }
+            }
+            BaseResponse resultUtils = new BaseResponse(ResultStatusCode.OK.getCode(),
+                    ResultStatusCode.OK.getMsg(), menusResponses);
+            return resultUtils;
+        }else{
+            return new BaseResponse(ResultStatusCode.UNAUTHO_ERROR);
+        }
+    }
+
+    @Override
+    public BaseResponse addMenu(MenuRequest menuRequest) {
+        int num = sysMenuMapper.addMenu(menuRequest);
+        if (num > 0){
+            BaseResponse baseResponse = new BaseResponse(ResultStatusCode.OK.getCode(),
+                    ResultStatusCode.OK.getMsg(), num);
+            return baseResponse;
+        }else{
+            return new BaseResponse(ResultStatusCode.OPRATE_FAILD);
         }
     }
 }
