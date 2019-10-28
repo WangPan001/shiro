@@ -15,4 +15,8 @@ import java.io.Serializable;
 public class RoleRequest implements Serializable {
 
     private String roleId;
+
+    private Integer pageSize = 0;
+
+    private Integer pageNum = 0;
 }

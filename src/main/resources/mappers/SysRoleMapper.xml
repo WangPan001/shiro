@@ -7,6 +7,16 @@
     id id, name name, remark remark, create_by create_by, create_time create_time,
     last_update_by last_update_by, last_update_time last_update_time,del_flag del_flag
     from sys_role
-    where role_id = #{roleId}
+    where 1=1
+    <if test="roleId != null and roleId != ''">
+      and role_id = #{roleId}
+    </if>
+  </select>
+
+  <select id="queryPerByRoleId" parameterType="com.cms.cn.model.Request.RoleRequest" resultType="com.cms.cn.model.Response.PerResponse">
+    SELECT DISTINCT sm.perms perms FROM sys_role_menu srm
+    LEFT JOIN sys_menu sm
+    ON srm.menu_id = sm.id
+    WHERE srm.role_id = #{roleId}
   </select>
 </mapper>

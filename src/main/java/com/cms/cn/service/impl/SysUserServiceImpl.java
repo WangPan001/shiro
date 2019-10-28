@@ -3,8 +3,11 @@ package com.cms.cn.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.cms.cn.constant.ResultStatusCode;
 import com.cms.cn.dao.SysUserMapper;
+import com.cms.cn.dao.SysUserRoleMapper;
 import com.cms.cn.model.Request.UserRequest;
+import com.cms.cn.model.Request.UserRoleRequest;
 import com.cms.cn.model.Response.UserResponse;
+import com.cms.cn.model.Response.UserRoleResponse;
 import com.cms.cn.model.entity.SysUser;
 import com.cms.cn.service.SysUserService;
 import com.cms.cn.model.Response.BaseResponse;
@@ -27,6 +30,9 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Resource
     private SysUserMapper sysUserMapper;
+
+    @Resource
+    private SysUserRoleMapper sysUserRoleMapper;
 
     @Override
     public BaseResponse getUserByName(UserRequest userRequest) {
@@ -51,9 +57,16 @@ public class SysUserServiceImpl implements SysUserService {
             userRequest.setPageNum(10);
         }
         PageHelper.startPage(userRequest.getPageNum(), userRequest.getPageSize());
-        List<SysUser> list = sysUserMapper.findList(userRequest);
+        List<UserResponse> list = sysUserMapper.findList(userRequest);
+
         if (list != null && list.size() > 0){
-            PageInfo<SysUser> page = new PageInfo<>(list);
+            for (UserResponse userResponse : list){
+                UserRoleRequest roleUserRequest = new UserRoleRequest();
+                roleUserRequest.setUserId(userResponse.getId());
+                List<UserRoleResponse> userRoleResponses = sysUserRoleMapper.selectUserRoles(roleUserRequest);
+                userResponse.setUserRoleResponses(userRoleResponses);
+            }
+            PageInfo<UserResponse> page = new PageInfo<>(list);
             BaseResponse resultUtils = new BaseResponse(ResultStatusCode.OK.getCode(),
                     ResultStatusCode.OK.getMsg(), page);
             return resultUtils;

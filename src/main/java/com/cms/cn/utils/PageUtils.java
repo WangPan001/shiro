@@ -1,4 +1,4 @@
-package com.xdl.cn.util;
+package com.cms.cn.utils;
 
 import com.github.pagehelper.Page;
 

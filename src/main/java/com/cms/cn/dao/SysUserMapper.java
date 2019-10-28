@@ -10,5 +10,5 @@ public interface SysUserMapper {
 
     UserResponse selectUser(SysUser record);
 
-    List<SysUser> findList(UserRequest userRequest);
+    List<UserResponse> findList(UserRequest userRequest);
 }

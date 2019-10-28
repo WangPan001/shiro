@@ -45,7 +45,8 @@
 	su.`status` `status`,
 	su.dept_id dept_id,
 	sd.name dept_name,
-	sr.remark role_name
+	sr.remark role_name,
+	sr.id role_id
     FROM
         sys_user su
     LEFT JOIN sys_dept sd

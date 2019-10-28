@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName UserResponse
@@ -48,5 +49,5 @@ public class UserResponse implements Serializable {
 
     private String token;
 
-
+    private List<UserRoleResponse> userRoleResponses;
 }

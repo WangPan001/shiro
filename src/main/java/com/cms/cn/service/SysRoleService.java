@@ -15,6 +15,6 @@ import java.util.List;
 
 public interface SysRoleService {
 
-    public BaseResponse findByUserid(RoleRequest roleRequest);
+    BaseResponse findRoles(RoleRequest roleRequest);
 
 }

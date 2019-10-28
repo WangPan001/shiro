@@ -1,11 +1,14 @@
 package com.cms.cn.config;
 
 import com.cms.cn.dao.SysMenuMapper;
+import com.cms.cn.dao.SysRoleMapper;
 import com.cms.cn.dao.SysUserMapper;
 import com.cms.cn.dao.SysUserRoleMapper;
 import com.cms.cn.model.Request.MenusRequest;
+import com.cms.cn.model.Request.RoleRequest;
 import com.cms.cn.model.Request.UserRoleRequest;
 import com.cms.cn.model.Response.MenusResponse;
+import com.cms.cn.model.Response.PerResponse;
 import com.cms.cn.model.Response.UserResponse;
 import com.cms.cn.model.Response.UserRoleResponse;
 import com.cms.cn.model.entity.SysUser;
@@ -40,6 +43,9 @@ public class ShiroRealm extends AuthorizingRealm {
 
     @Resource
     private SysUserRoleMapper sysUserRoleMapper;
+
+    @Resource
+    private SysRoleMapper sysRoleMapper;
     /**
      * 认证信息.(身份验证) : Authentication 是用来验证用户身份
      *
@@ -110,14 +116,13 @@ public class ShiroRealm extends AuthorizingRealm {
                 if(CollectionUtils.isNotEmpty(userRoleResponses)){
                     for(UserRoleResponse userRoleResponse : userRoleResponses){
                         info.addRole(userRoleResponse.getRoleName());
-                        MenusRequest menusRequest = new MenusRequest();
-                        menusRequest.setRoleId(userRoleResponse.getRoleId());
-                        menusRequest.setUserName(userLogin.getName());
-                        List<MenusResponse> menuList = sysMenuMapper.getAllMenuByRoleId(menusRequest);
-                        if(CollectionUtils.isNotEmpty(menuList)){
-                            for (MenusResponse menu : menuList){
-                                if(StringUtils.isNoneBlank(menu.getPermission())){
-                                    info.addStringPermission(menu.getPermission());
+                        RoleRequest roleRequest = new RoleRequest();
+                        roleRequest.setRoleId(userRoleResponse.getRoleId());
+                        List<PerResponse> perResponses = sysRoleMapper.queryPerByRoleId(roleRequest);
+                        if(CollectionUtils.isNotEmpty(perResponses)){
+                            for (PerResponse perResponse : perResponses){
+                                if(perResponse != null && StringUtils.isNotBlank(perResponse.getPerms())){
+                                    info.addStringPermission(perResponse.getPerms());
                                 }
                             }
                         }

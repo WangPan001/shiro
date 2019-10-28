@@ -1,8 +1,10 @@
 package com.cms.cn.model.entity;
 
+import com.cms.cn.model.Response.UserRoleResponse;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 public class SysUser implements Serializable {
@@ -33,5 +35,7 @@ public class SysUser implements Serializable {
     private String last_update_time;
 
     private String del_flag;
+
+    private List<UserRoleResponse> userRoleResponses;
 
 }
