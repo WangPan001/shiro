@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cms.cn.constant.ResultStatusCode;
 import com.cms.cn.dao.SysUserMapper;
 import com.cms.cn.dao.SysUserRoleMapper;
+import com.cms.cn.model.request.LoginRequest;
 import com.cms.cn.model.request.UserRequest;
 import com.cms.cn.model.request.UserRoleRequest;
 import com.cms.cn.model.response.UserResponse;
@@ -82,6 +83,34 @@ public class SysUserServiceImpl implements SysUserService {
             resultUtils = new BaseResponse(ResultStatusCode.OK.getCode(),
                     ResultStatusCode.OK.getMsg(), num);
 
+        }else{
+            resultUtils = new BaseResponse(ResultStatusCode.OPRATE_FAILD.getCode(),
+                    ResultStatusCode.OPRATE_FAILD.getMsg(), num);
+        }
+        return resultUtils;
+    }
+
+    @Override
+    public BaseResponse addUser(UserRequest userRequest) {
+        int num = sysUserMapper.addUser(userRequest);
+        BaseResponse resultUtils = null;
+        if (num > 0){
+            resultUtils = new BaseResponse(ResultStatusCode.OK.getCode(),
+                    ResultStatusCode.OK.getMsg(), num);
+        }else{
+            resultUtils = new BaseResponse(ResultStatusCode.OPRATE_FAILD.getCode(),
+                    ResultStatusCode.OPRATE_FAILD.getMsg(), num);
+        }
+        return resultUtils;
+    }
+
+    @Override
+    public BaseResponse updateUserById(UserRequest userRequest) {
+        int num = sysUserMapper.updateUserById(userRequest);
+        BaseResponse resultUtils = null;
+        if (num > 0){
+            resultUtils = new BaseResponse(ResultStatusCode.OK.getCode(),
+                    ResultStatusCode.OK.getMsg(), num);
         }else{
             resultUtils = new BaseResponse(ResultStatusCode.OPRATE_FAILD.getCode(),
                     ResultStatusCode.OPRATE_FAILD.getMsg(), num);

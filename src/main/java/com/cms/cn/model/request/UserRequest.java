@@ -8,21 +8,29 @@ import java.io.Serializable;
  * @ClassName UserRequest
  * @Description Todo
  * @Author wangpan
- * @Date 2019/6/4 10:10
+ * @Date 2019/10/29 16:35
  * @Version 1.0
  **/
 @Data
 public class UserRequest implements Serializable {
 
-    private String loginName;
+    private String id;
 
-    private String phone;
+    private String mobile;
+
+    private String name;
+
+    private String salt;
 
     private String password;
 
-    private String captcha;
+    private String email;
 
-    private String id;
+    private String dept_id;
+
+    private String create_by;
+
+    private String last_update_by;
 
     private Integer pageSize = 0;
 

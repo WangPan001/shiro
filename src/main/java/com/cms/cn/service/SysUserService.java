@@ -1,5 +1,6 @@
 package com.cms.cn.service;
 
+import com.cms.cn.model.request.LoginRequest;
 import com.cms.cn.model.request.UserRequest;
 import com.cms.cn.model.response.BaseResponse;
 
@@ -20,4 +21,8 @@ public interface SysUserService {
     BaseResponse findList(UserRequest userRequest);
 
     BaseResponse batchUpdateUserById(List<UserRequest> userRequests);
+
+    BaseResponse addUser(UserRequest userRequest);
+
+    BaseResponse updateUserById(UserRequest userRequest);
 }

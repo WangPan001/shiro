@@ -36,4 +36,16 @@ public class UserController {
     public BaseResponse batchUpdateUserById(@RequestBody List<UserRequest> userRequest){
         return sysUserService.batchUpdateUserById(userRequest);
     }
+
+    @RequiresPermissions("sys:user:add")
+    @RequestMapping("/add")
+    public BaseResponse addUser(@RequestBody UserRequest userRequest){
+        return sysUserService.addUser(userRequest);
+    }
+
+    @RequiresPermissions("sys:user:edit")
+    @RequestMapping("/edit")
+    public BaseResponse updateUserById(@RequestBody UserRequest userRequest){
+        return sysUserService.updateUserById(userRequest);
+    }
 }

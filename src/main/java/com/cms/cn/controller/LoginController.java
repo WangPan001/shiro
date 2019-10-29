@@ -1,7 +1,7 @@
 package com.cms.cn.controller;
 
 import com.cms.cn.constant.ResultStatusCode;
-import com.cms.cn.model.request.UserRequest;
+import com.cms.cn.model.request.LoginRequest;
 import com.cms.cn.model.response.BaseResponse;
 import com.cms.cn.model.response.UserResponse;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +33,7 @@ public class LoginController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @RequestMapping("/login")
     @ResponseBody
-    public BaseResponse login(HttpServletRequest request, @RequestBody UserRequest userRequest){
+    public BaseResponse login(HttpServletRequest request, @RequestBody LoginRequest userRequest){
         try {
             // 验证验证码
             Session session = SecurityUtils.getSubject().getSession();
