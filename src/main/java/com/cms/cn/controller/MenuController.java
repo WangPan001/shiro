@@ -1,9 +1,9 @@
 package com.cms.cn.controller;
 
 import com.cms.cn.constant.ResultStatusCode;
-import com.cms.cn.model.Request.MenuRequest;
-import com.cms.cn.model.Request.MenusRequest;
-import com.cms.cn.model.Response.BaseResponse;
+import com.cms.cn.model.request.MenuRequest;
+import com.cms.cn.model.request.MenusRequest;
+import com.cms.cn.model.response.BaseResponse;
 import com.cms.cn.service.SysMenuService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

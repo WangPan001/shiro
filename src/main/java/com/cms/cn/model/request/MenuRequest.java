@@ -1,4 +1,4 @@
-package com.cms.cn.model.Request;
+package com.cms.cn.model.request;
 
 import lombok.Data;
 

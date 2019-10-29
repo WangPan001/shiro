@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cms.cn.dao.SysRoleMapper">
 
-  <select id="selectRole" parameterType="com.cms.cn.model.Request.RoleRequest" resultType="com.cms.cn.model.Response.RoleResponse">
+  <select id="selectRole" parameterType="com.cms.cn.model.request.RoleRequest" resultType="com.cms.cn.model.response.RoleResponse">
     select 
     id id, name name, remark remark, create_by create_by, create_time create_time,
     last_update_by last_update_by, last_update_time last_update_time,del_flag del_flag
@@ -13,7 +13,7 @@
     </if>
   </select>
 
-  <select id="queryPerByRoleId" parameterType="com.cms.cn.model.Request.RoleRequest" resultType="com.cms.cn.model.Response.PerResponse">
+  <select id="queryPerByRoleId" parameterType="com.cms.cn.model.request.RoleRequest" resultType="com.cms.cn.model.response.PerResponse">
     SELECT DISTINCT sm.perms perms FROM sys_role_menu srm
     LEFT JOIN sys_menu sm
     ON srm.menu_id = sm.id

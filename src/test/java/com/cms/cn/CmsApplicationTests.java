@@ -15,7 +15,7 @@ public class CmsApplicationTests {
 
     @Test
     public void contextLoads() {
-        readFile();
+//        readFile();
     }
 
     /**

@@ -1,9 +1,8 @@
 package com.cms.cn.dao;
 
-import com.cms.cn.model.Request.RoleRequest;
-import com.cms.cn.model.Response.PerResponse;
-import com.cms.cn.model.Response.RoleResponse;
-import com.cms.cn.model.entity.SysRole;
+import com.cms.cn.model.request.RoleRequest;
+import com.cms.cn.model.response.PerResponse;
+import com.cms.cn.model.response.RoleResponse;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package com.cms.cn.service;
 
 
-import com.cms.cn.model.Request.UserRoleRequest;
-import com.cms.cn.model.Response.BaseResponse;
+import com.cms.cn.model.request.UserRoleRequest;
+import com.cms.cn.model.response.BaseResponse;
 
 public interface SysUserRoleService {
 

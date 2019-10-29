@@ -1,8 +1,7 @@
 package com.cms.cn.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.cms.cn.model.Response.UserResponse;
-import com.cms.cn.model.entity.SysUser;
+import com.cms.cn.model.response.UserResponse;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;

@@ -1,13 +1,15 @@
 package com.cms.cn.controller;
 
-import com.cms.cn.model.Request.UserRequest;
+import com.cms.cn.model.request.UserRequest;
 import com.cms.cn.service.SysUserService;
-import com.cms.cn.model.Response.BaseResponse;
+import com.cms.cn.model.response.BaseResponse;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @ClassName UserController
@@ -23,9 +25,15 @@ public class UserController {
     @Autowired
     private SysUserService sysUserService;
 
-    @RequiresPermissions("sys:menu")
+    @RequiresPermissions("sys:user:view")
     @RequestMapping("/findList")
     public BaseResponse findList(@RequestBody UserRequest userRequest){
         return sysUserService.findList(userRequest);
+    }
+
+    @RequiresPermissions("sys:user:delete")
+    @RequestMapping("/delete")
+    public BaseResponse batchUpdateUserById(@RequestBody List<UserRequest> userRequest){
+        return sysUserService.batchUpdateUserById(userRequest);
     }
 }

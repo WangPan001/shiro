@@ -2,10 +2,9 @@ package com.cms.cn.service.impl;
 
 import com.cms.cn.constant.ResultStatusCode;
 import com.cms.cn.dao.SysUserRoleMapper;
-import com.cms.cn.model.Request.UserRoleRequest;
-import com.cms.cn.model.Response.BaseResponse;
-import com.cms.cn.model.Response.UserRoleResponse;
-import com.cms.cn.model.entity.SysUserRole;
+import com.cms.cn.model.request.UserRoleRequest;
+import com.cms.cn.model.response.BaseResponse;
+import com.cms.cn.model.response.UserRoleResponse;
 import com.cms.cn.service.SysUserRoleService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;

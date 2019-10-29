@@ -2,12 +2,12 @@ package com.cms.cn.service.impl;
 
 import com.cms.cn.constant.ResultStatusCode;
 import com.cms.cn.dao.SysMenuMapper;
-import com.cms.cn.model.Request.MenuRequest;
-import com.cms.cn.model.Request.MenusRequest;
-import com.cms.cn.model.Response.MenusResponse;
+import com.cms.cn.model.request.MenuRequest;
+import com.cms.cn.model.request.MenusRequest;
+import com.cms.cn.model.response.MenusResponse;
 import com.cms.cn.service.SysMenuService;
 import com.cms.cn.utils.ParamUtils;
-import com.cms.cn.model.Response.BaseResponse;
+import com.cms.cn.model.response.BaseResponse;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

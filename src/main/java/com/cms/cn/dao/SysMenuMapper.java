@@ -1,8 +1,8 @@
 package com.cms.cn.dao;
 
-import com.cms.cn.model.Request.MenuRequest;
-import com.cms.cn.model.Request.MenusRequest;
-import com.cms.cn.model.Response.MenusResponse;
+import com.cms.cn.model.request.MenuRequest;
+import com.cms.cn.model.request.MenusRequest;
+import com.cms.cn.model.response.MenusResponse;
 
 import java.util.List;
 

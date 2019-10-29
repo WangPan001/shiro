@@ -1,7 +1,7 @@
 package com.cms.cn.dao;
 
-import com.cms.cn.model.Request.UserRoleRequest;
-import com.cms.cn.model.Response.UserRoleResponse;
+import com.cms.cn.model.request.UserRoleRequest;
+import com.cms.cn.model.response.UserRoleResponse;
 
 import java.util.List;
 

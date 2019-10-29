@@ -1,8 +1,5 @@
 package com.cms.cn.utils;
 
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
-
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.Mac;
@@ -10,6 +7,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
+import java.util.Base64;
 
 /**
  * @ClassName MD5Util
@@ -134,7 +132,7 @@ public class EncryptUtils {
     }
 
     private static String base64(byte[] res){
-        return Base64.encode(res);
+        return encodeBase64(res);
     }
 
     /**将二进制转换成16进制 */
@@ -285,7 +283,7 @@ public class EncryptUtils {
      * @return
      */
     public static String Base64Encode(String res) {
-        return Base64.encode(res.getBytes());
+        return encodeBase64(res.getBytes());
     }
 
     /**
@@ -293,12 +291,19 @@ public class EncryptUtils {
      * @param res
      * @return
      */
-    public static String Base64Decode(String res) throws Base64DecodingException {
-        return new String(Base64.decode(res));
+    public static String Base64Decode(String res) {
+        return new String(decodeBase64(res));
     }
 
-    public static void main(String[] args) throws Base64DecodingException {
+    public static void main(String[] args) {
         System.out.println(MD5("admin","123456"));
     }
 
+    private static String encodeBase64(byte[] binaryData) {
+        return Base64.getEncoder().encodeToString(binaryData);
+    }
+
+    private static byte[] decodeBase64(String encoded){
+        return Base64.getDecoder().decode(encoded);
+    }
 }

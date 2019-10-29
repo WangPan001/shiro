@@ -2,7 +2,7 @@ package com.cms.cn.filter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cms.cn.constant.ResultStatusCode;
-import com.cms.cn.model.Response.BaseResponse;
+import com.cms.cn.model.response.BaseResponse;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authz.RolesAuthorizationFilter;
 import org.springframework.http.HttpMethod;

@@ -4,13 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.cms.cn.constant.ResultStatusCode;
 import com.cms.cn.dao.SysUserMapper;
 import com.cms.cn.dao.SysUserRoleMapper;
-import com.cms.cn.model.Request.UserRequest;
-import com.cms.cn.model.Request.UserRoleRequest;
-import com.cms.cn.model.Response.UserResponse;
-import com.cms.cn.model.Response.UserRoleResponse;
+import com.cms.cn.model.request.UserRequest;
+import com.cms.cn.model.request.UserRoleRequest;
+import com.cms.cn.model.response.UserResponse;
+import com.cms.cn.model.response.UserRoleResponse;
 import com.cms.cn.model.entity.SysUser;
 import com.cms.cn.service.SysUserService;
-import com.cms.cn.model.Response.BaseResponse;
+import com.cms.cn.model.response.BaseResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -72,5 +72,20 @@ public class SysUserServiceImpl implements SysUserService {
             return resultUtils;
         }
         return null;
+    }
+
+    @Override
+    public BaseResponse batchUpdateUserById(List<UserRequest> userRequests) {
+        int num = sysUserMapper.batchUpdateUserById(userRequests);
+        BaseResponse resultUtils = null;
+        if (num > 0){
+            resultUtils = new BaseResponse(ResultStatusCode.OK.getCode(),
+                    ResultStatusCode.OK.getMsg(), num);
+
+        }else{
+            resultUtils = new BaseResponse(ResultStatusCode.OPRATE_FAILD.getCode(),
+                    ResultStatusCode.OPRATE_FAILD.getMsg(), num);
+        }
+        return resultUtils;
     }
 }

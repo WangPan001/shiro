@@ -1,7 +1,7 @@
 package com.cms.cn.controller;
 
 import com.cms.cn.constant.ResultStatusCode;
-import com.cms.cn.model.Response.BaseResponse;
+import com.cms.cn.model.response.BaseResponse;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

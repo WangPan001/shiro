@@ -1,4 +1,4 @@
-package com.cms.cn.model.Request;
+package com.cms.cn.model.request;
 
 import lombok.Data;
 
@@ -21,6 +21,8 @@ public class UserRequest implements Serializable {
     private String password;
 
     private String captcha;
+
+    private String id;
 
     private Integer pageSize = 0;
 

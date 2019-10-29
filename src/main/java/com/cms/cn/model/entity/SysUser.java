@@ -1,6 +1,6 @@
 package com.cms.cn.model.entity;
 
-import com.cms.cn.model.Response.UserRoleResponse;
+import com.cms.cn.model.response.UserRoleResponse;
 import lombok.Data;
 
 import java.io.Serializable;

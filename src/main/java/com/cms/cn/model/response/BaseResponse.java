@@ -1,4 +1,4 @@
-package com.cms.cn.model.Response;
+package com.cms.cn.model.response;
 
 import com.cms.cn.constant.ResultStatusCode;
 

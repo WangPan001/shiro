@@ -1,9 +1,7 @@
 package com.cms.cn.service;
 
-import com.cms.cn.model.Request.RoleRequest;
-import com.cms.cn.model.Response.BaseResponse;
-
-import java.util.List;
+import com.cms.cn.model.request.RoleRequest;
+import com.cms.cn.model.response.BaseResponse;
 
 /**
  * @ClassName RoleService

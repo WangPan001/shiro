@@ -9,7 +9,7 @@
   <sql id="Base_Column_List">
     id, user_id, role_id
   </sql>
-  <select id="selectUserRoles" parameterType="com.cms.cn.model.Request.UserRoleRequest" resultType="com.cms.cn.model.Response.UserRoleResponse">
+  <select id="selectUserRoles" parameterType="com.cms.cn.model.request.UserRoleRequest" resultType="com.cms.cn.model.response.UserRoleResponse">
     select 
     sur.role_id roleId, sur.user_id userId,sr.name roleName, sr.remark remark
     from sys_user_role sur

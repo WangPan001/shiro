@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cms.cn.dao.SysMenuMapper">
 
-  <select id="getAllMenuByRoleId" parameterType="com.cms.cn.model.Request.MenusRequest" resultType="com.cms.cn.model.Response.MenusResponse">
+  <select id="getAllMenuByRoleId" parameterType="com.cms.cn.model.request.MenusRequest" resultType="com.cms.cn.model.response.MenusResponse">
     select
     sm.parent_id parentMenuId,
     sm.id menuId,
@@ -32,7 +32,7 @@
     and su.name = #{userName}
   </select>
 
-  <select id="getAllMenuByParentId" parameterType="com.cms.cn.model.Request.MenusRequest" resultType="com.cms.cn.model.Response.MenusResponse">
+  <select id="getAllMenuByParentId" parameterType="com.cms.cn.model.request.MenusRequest" resultType="com.cms.cn.model.response.MenusResponse">
     select
     sm.parent_id parentMenuId,
     sm.id menuId,
@@ -60,7 +60,7 @@
     </if>
   </select>
 
-  <insert id="addMenu" parameterType="com.cms.cn.model.Request.MenuRequest">
+  <insert id="addMenu" parameterType="com.cms.cn.model.request.MenuRequest">
     insert into sys_menu(
       name, parent_id, usr, perms, is_show, sort, type, icon,
       order_num, create_by, create_time, last_update_by,

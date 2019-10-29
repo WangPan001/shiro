@@ -1,7 +1,9 @@
 package com.cms.cn.service;
 
-import com.cms.cn.model.Request.UserRequest;
-import com.cms.cn.model.Response.BaseResponse;
+import com.cms.cn.model.request.UserRequest;
+import com.cms.cn.model.response.BaseResponse;
+
+import java.util.List;
 
 
 /**
@@ -13,7 +15,9 @@ import com.cms.cn.model.Response.BaseResponse;
  **/
 public interface SysUserService {
 
-    public BaseResponse getUserByName(UserRequest userRequest);
+    BaseResponse getUserByName(UserRequest userRequest);
 
-    public BaseResponse findList(UserRequest userRequest);
+    BaseResponse findList(UserRequest userRequest);
+
+    BaseResponse batchUpdateUserById(List<UserRequest> userRequests);
 }

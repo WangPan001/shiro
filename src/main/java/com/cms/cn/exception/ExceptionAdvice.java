@@ -1,7 +1,7 @@
 package com.cms.cn.exception;
 
 import com.cms.cn.constant.ResultStatusCode;
-import com.cms.cn.model.Response.BaseResponse;
+import com.cms.cn.model.response.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthorizedException;

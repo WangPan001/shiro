@@ -1,11 +1,9 @@
 package com.cms.cn.controller;
 
 import com.cms.cn.constant.ResultStatusCode;
-import com.cms.cn.model.Request.UserRequest;
-import com.cms.cn.model.Response.BaseResponse;
-import com.cms.cn.model.Response.UserResponse;
-import com.cms.cn.model.entity.SysUser;
-import com.cms.cn.utils.PasswordEncoderUtils;
+import com.cms.cn.model.request.UserRequest;
+import com.cms.cn.model.response.BaseResponse;
+import com.cms.cn.model.response.UserResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
