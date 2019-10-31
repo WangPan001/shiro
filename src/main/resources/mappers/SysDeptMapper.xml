@@ -1,24 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cms.cn.dao.SysDeptMapper">
-  <resultMap id="BaseResultMap" type="com.cms.cn.model.response.DeptResponse">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
-    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
-    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy" />
-    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
-    <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, name, parent_id, order_num, create_by, create_time, last_update_by, last_update_time,
-    del_flag
-  </sql>
-
   <select id="queryDepts" parameterType="com.cms.cn.model.request.DeptRequest" resultType="com.cms.cn.model.response.DeptResponse">
-    select <include refid="Base_Column_List" /> from sys_dept
+    select id id, name name, parent_id parentId, order_num orderNum, create_by createBy,
+      create_time createTime, last_update_by lastUpdateBy, last_update_time lastUpdateTime
+    from sys_dept
     where 1=1
     <if test="parentId != null and parentId != ''">
       and parent_id = #{parentId}
@@ -45,4 +31,50 @@
     WHERE FIND_IN_SET(DATA.id, ID._ids) and DATA.parent_id <![CDATA[ <> ]]> 0 and DATA.del_flag = 0
     ORDER BY level, id
   </select>
+
+  <insert id="addDept" parameterType="com.cms.cn.model.request.DeptRequest">
+    insert into sys_dept(name, parent_id, order_num, create_by, create_time, last_update_by, last_update_time)
+    values
+    (#{name}, #{parentId}, #{orderNum}, #{createBy}, now(), #{lastUpdateBy}, now())
+  </insert>
+
+  <update id="updateDepts" parameterType="com.cms.cn.model.request.DeptRequest">
+    update sys_dept
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="orderNum != null">
+        order_num = #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null">
+        last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null">
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <update id="deleteDept" parameterType="java.util.List">
+    update sys_dept set del_flag = 1
+    where id in(
+      <foreach collection="list" item="list" index="index" separator=",">
+        #{list.id}
+      </foreach>
+    )
+  </update>
 </mapper>

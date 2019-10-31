@@ -35,5 +35,7 @@ public class DeptResponse implements Serializable {
 
     private String delFlag;
 
+    private String parentName;
+
     private List<DeptResponse> children;
 }

@@ -14,8 +14,16 @@ import java.io.Serializable;
 @Data
 public class DeptRequest implements Serializable {
 
+    private String id;
+
     private String orderNum;
 
     private String parentId;
+
+    private String name;
+
+    private String createBy;
+
+    private String lastUpdateBy;
 
 }

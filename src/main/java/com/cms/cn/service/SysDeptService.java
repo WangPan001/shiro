@@ -3,6 +3,8 @@ package com.cms.cn.service;
 import com.cms.cn.model.request.DeptRequest;
 import com.cms.cn.model.response.BaseResponse;
 
+import java.util.List;
+
 /**
  * @ClassName SysDeptService
  * @Description Todo
@@ -12,5 +14,11 @@ import com.cms.cn.model.response.BaseResponse;
  **/
 public interface SysDeptService {
 
-    BaseResponse queryDepts();
+    BaseResponse queryDepts(DeptRequest deptRequest);
+
+    BaseResponse addDept(DeptRequest deptRequest);
+
+    BaseResponse updateDept(DeptRequest deptRequest);
+
+    BaseResponse deleteDept(List<DeptRequest> deptRequests);
 }

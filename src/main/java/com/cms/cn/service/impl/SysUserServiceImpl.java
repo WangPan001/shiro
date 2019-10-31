@@ -14,6 +14,8 @@ import com.cms.cn.service.SysUserService;
 import com.cms.cn.model.response.BaseResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,6 +30,8 @@ import java.util.List;
  **/
 @Service
 public class SysUserServiceImpl implements SysUserService {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Resource
     private SysUserMapper sysUserMapper;
@@ -93,6 +97,9 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public BaseResponse addUser(UserRequest userRequest) {
         int num = sysUserMapper.addUser(userRequest);
+        if (userRequest.getUserRoleRequestList() != null && userRequest.getUserRoleRequestList().size() > 0){
+            int count = sysUserRoleMapper.insertUserRoles(userRequest.getUserRoleRequestList());
+        }
         BaseResponse resultUtils = null;
         if (num > 0){
             resultUtils = new BaseResponse(ResultStatusCode.OK.getCode(),
@@ -101,12 +108,19 @@ public class SysUserServiceImpl implements SysUserService {
             resultUtils = new BaseResponse(ResultStatusCode.OPRATE_FAILD.getCode(),
                     ResultStatusCode.OPRATE_FAILD.getMsg(), num);
         }
+        logger.info("添加用户,param={},result={}", JSONObject.toJSONString(userRequest), resultUtils);
         return resultUtils;
     }
 
     @Override
     public BaseResponse updateUserById(UserRequest userRequest) {
         int num = sysUserMapper.updateUserById(userRequest);
+        if (userRequest.getUserRoleRequestList().size() > 0){
+            UserRoleRequest roleRequest = new UserRoleRequest();
+            roleRequest.setUserId(userRequest.getId());
+            sysUserRoleMapper.deleteUserRoles(roleRequest);
+            sysUserRoleMapper.insertUserRoles(userRequest.getUserRoleRequestList());
+        }
         BaseResponse resultUtils = null;
         if (num > 0){
             resultUtils = new BaseResponse(ResultStatusCode.OK.getCode(),
@@ -115,6 +129,7 @@ public class SysUserServiceImpl implements SysUserService {
             resultUtils = new BaseResponse(ResultStatusCode.OPRATE_FAILD.getCode(),
                     ResultStatusCode.OPRATE_FAILD.getMsg(), num);
         }
+        logger.info("修改用户,param={},result={}", JSONObject.toJSONString(userRequest), resultUtils);
         return resultUtils;
     }
 }

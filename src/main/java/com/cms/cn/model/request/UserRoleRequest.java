@@ -15,4 +15,14 @@ import java.io.Serializable;
 public class UserRoleRequest implements Serializable {
 
     private String userId;
+
+    private String roleId;
+
+    private String create_by;
+
+    private String create_time;
+
+    private String last_update_by;
+
+    private String last_update_time;
 }
