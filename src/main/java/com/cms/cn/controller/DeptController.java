@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 /**
  * @ClassName DeptController
  * @Description Todo
@@ -49,7 +51,7 @@ public class DeptController {
     @RequiresPermissions("sys:dept:delete")
     @RequestMapping(value = "/delete")
     @ResponseBody
-    public BaseResponse deleteDept(@RequestBody DeptRequest deptRequest){
-        return sysDeptService.updateDept(deptRequest);
+    public BaseResponse deleteDept(@RequestBody List<DeptRequest> deptRequest){
+        return sysDeptService.deleteDept(deptRequest);
     }
 }

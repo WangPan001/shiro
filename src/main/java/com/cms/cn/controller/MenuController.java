@@ -26,7 +26,7 @@ public class MenuController {
     @Autowired
     private SysMenuService sysMenuService;
 
-    @RequiresPermissions("sys:menu")
+    @RequiresPermissions("sys:menu:view")
     @ResponseBody
     @RequestMapping("/findNavTree")
     public BaseResponse findNavTree(@RequestBody MenusRequest menusRequest){
@@ -38,7 +38,7 @@ public class MenuController {
         }
     }
 
-    @RequiresPermissions("sys:menu")
+    @RequiresPermissions("sys:menu:view")
     @ResponseBody
     @RequestMapping("/findMenuTree")
     public BaseResponse findMenuTree(@RequestBody MenusRequest menusRequest){

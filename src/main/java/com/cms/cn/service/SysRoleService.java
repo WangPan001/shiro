@@ -15,4 +15,6 @@ public interface SysRoleService {
 
     BaseResponse findRoles(RoleRequest roleRequest);
 
+    BaseResponse queryMenuByRoleId(RoleRequest roleRequest);
+
 }

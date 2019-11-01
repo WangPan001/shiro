@@ -26,4 +26,6 @@ public class DeptRequest implements Serializable {
 
     private String lastUpdateBy;
 
+    private String delFlag;
+
 }

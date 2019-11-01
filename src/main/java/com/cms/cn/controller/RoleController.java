@@ -30,4 +30,11 @@ public class RoleController {
     public BaseResponse queryRoles(@RequestBody RoleRequest roleRequest) {
         return sysRoleService.findRoles(roleRequest);
     }
+
+    @RequiresPermissions("sys:role:view")
+    @RequestMapping("/queryMenuByRoleId")
+    @ResponseBody
+    public BaseResponse queryMenuByRoleId(@RequestBody RoleRequest roleRequest) {
+        return sysRoleService.queryMenuByRoleId(roleRequest);
+    }
 }

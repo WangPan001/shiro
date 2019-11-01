@@ -7,9 +7,9 @@
     id id, name name, remark remark, create_by create_by, create_time create_time,
     last_update_by last_update_by, last_update_time last_update_time,del_flag del_flag
     from sys_role
-    where 1=1
+    where 1=1 and del_flag = 0
     <if test="roleId != null and roleId != ''">
-      and role_id = #{roleId}
+      and id = #{roleId}
     </if>
   </select>
 
@@ -17,6 +17,39 @@
     SELECT DISTINCT sm.perms perms FROM sys_role_menu srm
     LEFT JOIN sys_menu sm
     ON srm.menu_id = sm.id
-    WHERE srm.role_id = #{roleId}
+    WHERE srm.role_id = #{roleId} and srm.del_flag = 0 and sm.del_flag = 0
+  </select>
+
+  <select id="queryMenuByRoleId" parameterType="com.cms.cn.model.request.RoleRequest" resultType="com.cms.cn.model.response.MenusResponse">
+    select
+    sm.parent_id parentMenuId,
+    sm.id menuId,
+    sm.name menuName,
+    sm.perms permission,
+    sm.sort sort,
+    sm.url href,
+    sm.icon icon,
+    sm.is_show isShow,
+    sm.type menuType,
+    sm.useable useable,
+    sm.create_by createBy,
+    sm.create_time createDate,
+    sm.last_update_by updateBy,
+    sm.last_update_time updateDate,
+    sm.remarks remarks,
+    sm.del_flag delFlag
+    from sys_role_menu srm
+    left join sys_menu sm
+    on srm.menu_id = sm.id
+    where 1=1 and sm.del_flag = 0 and srm.del_flag = 0
+    <if test="roleId != null and roleId != ''">
+      and srm.role_id = #{roleId}
+    </if>
+    <if test="parentId != null and parentId != ''">
+      and sm.parent_id = #{parentId}
+    </if>
+    <if test="type != null and type != ''">
+      and sm.type = #{type}
+    </if>
   </select>
 </mapper>

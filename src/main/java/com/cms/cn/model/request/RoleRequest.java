@@ -16,6 +16,10 @@ public class RoleRequest implements Serializable {
 
     private String roleId;
 
+    private String parentId;
+
+    private String type;
+
     private Integer pageSize = 0;
 
     private Integer pageNum = 0;

@@ -5,9 +5,15 @@
     select id id, name name, parent_id parentId, order_num orderNum, create_by createBy,
       create_time createTime, last_update_by lastUpdateBy, last_update_time lastUpdateTime
     from sys_dept
-    where 1=1
+    where 1=1 and del_flag = 0
     <if test="parentId != null and parentId != ''">
       and parent_id = #{parentId}
+    </if>
+    <if test="name != null and name != ''">
+      and name = #{name}
+    </if>
+    <if test="id != null and id != ''">
+      and id = #{id}
     </if>
     order by order_num
   </select>
@@ -28,7 +34,7 @@
     (SELECT @ids :=#{parentId}, @l := 0 ) b
     WHERE @ids IS NOT NULL
     ) id, sys_dept DATA
-    WHERE FIND_IN_SET(DATA.id, ID._ids) and DATA.parent_id <![CDATA[ <> ]]> 0 and DATA.del_flag = 0
+    WHERE FIND_IN_SET(DATA.id, ID._ids) and DATA.del_flag = 0
     ORDER BY level, id
   </select>
 
@@ -53,15 +59,10 @@
       <if test="createBy != null">
         create_by = #{createBy,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="lastUpdateBy != null">
         last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
       </if>
-      <if test="lastUpdateTime != null">
-        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
-      </if>
+      last_update_time = now(),
       <if test="delFlag != null">
         del_flag = #{delFlag,jdbcType=TINYINT},
       </if>

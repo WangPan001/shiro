@@ -6,6 +6,7 @@ import com.cms.cn.model.request.DeptRequest;
 import com.cms.cn.model.response.BaseResponse;
 import com.cms.cn.model.response.DeptResponse;
 import com.cms.cn.service.SysDeptService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -32,38 +33,50 @@ public class SysDeptServiceImpl implements SysDeptService {
     @Override
     public BaseResponse queryDepts(DeptRequest deptRequest) {
         List<DeptResponse> deptResponses = sysDeptMapper.queryDepts(deptRequest);
-        if (deptResponses != null && deptResponses.size() > 0){
-            for (DeptResponse deptResponse : deptResponses){
-                DeptRequest deptRequest1 = new DeptRequest();
-                deptRequest1.setParentId(deptResponse.getId());
-                List<DeptResponse> responses = sysDeptMapper.queryDeptsById(deptRequest1);
-                if(responses != null && responses.size() > 0){
-                    List<DeptResponse> deptResponses2 = new ArrayList<>();
-                    List<DeptResponse> deptResponses3 = new ArrayList<>();
-                    for (DeptResponse dept : responses){
-                        if ("2".equals(dept.getLevel())){
-                            dept.setParentName(deptResponse.getName());
-                            deptResponses2.add(dept);
-                        }else if ("3".equals(dept.getLevel())){
-                            deptResponses3.add(dept);
-                        }
-                    }
-                    if (deptResponses2 != null && deptResponses2.size() > 0){
-                        deptResponse.setChildren(deptResponses2);
-                    }
-                    for (DeptResponse deptResponse2 : deptResponses2){
-                        List<DeptResponse> deptResponses4 = new ArrayList<>();
-                        for (DeptResponse deptResponse3 : deptResponses3){
-                            if (deptResponse2.getId().equals(deptResponse3.getParentId())){
-                                deptResponse3.setParentName(deptResponse2.getName());
-                                deptResponses4.add(deptResponse3);
+        if (StringUtils.isBlank(deptRequest.getName())){
+            if (deptResponses != null && deptResponses.size() > 0){
+                for (DeptResponse deptResponse : deptResponses){
+                    DeptRequest deptRequest1 = new DeptRequest();
+                    deptRequest1.setParentId(deptResponse.getId());
+                    List<DeptResponse> responses = sysDeptMapper.queryDeptsById(deptRequest1);
+                    if(responses != null && responses.size() > 0){
+                        List<DeptResponse> deptResponses2 = new ArrayList<>();
+                        List<DeptResponse> deptResponses3 = new ArrayList<>();
+                        for (DeptResponse dept : responses){
+                            if ("2".equals(dept.getLevel())){
+                                dept.setParentName(deptResponse.getName());
+                                deptResponses2.add(dept);
+                            }else if ("3".equals(dept.getLevel())){
+                                deptResponses3.add(dept);
                             }
                         }
-                        deptResponse2.setChildren(deptResponses4);
+                        if (deptResponses2 != null && deptResponses2.size() > 0){
+                            deptResponse.setChildren(deptResponses2);
+                        }
+                        for (DeptResponse deptResponse2 : deptResponses2){
+                            List<DeptResponse> deptResponses4 = new ArrayList<>();
+                            for (DeptResponse deptResponse3 : deptResponses3){
+                                if (deptResponse2.getId().equals(deptResponse3.getParentId())){
+                                    deptResponse3.setParentName(deptResponse2.getName());
+                                    deptResponses4.add(deptResponse3);
+                                }
+                            }
+                            deptResponse2.setChildren(deptResponses4);
+                        }
                     }
                 }
             }
+        }else{
+            for (DeptResponse deptResponse : deptResponses){
+                DeptRequest deptRequest1 = new DeptRequest();
+                deptRequest1.setId(deptResponse.getParentId());
+                List<DeptResponse> deptResponses1 = sysDeptMapper.queryDepts(deptRequest1);
+                if (deptResponses1 != null && deptResponses1.size() > 0){
+                    deptResponse.setParentName(deptResponses1.get(0).getName());
+                }
+            }
         }
+
         return new BaseResponse(ResultStatusCode.OK.getCode(),
                 ResultStatusCode.OK.getMsg(), deptResponses);
     }
@@ -86,6 +99,20 @@ public class SysDeptServiceImpl implements SysDeptService {
     public BaseResponse updateDept(DeptRequest deptRequest) {
         BaseResponse response = null;
         int num = sysDeptMapper.updateDepts(deptRequest);
+        if (num > 0){
+            response = new BaseResponse(ResultStatusCode.OK.getCode(),
+                    ResultStatusCode.OK.getMsg(), num);
+        }else{
+            response = new BaseResponse(ResultStatusCode.OPRATE_FAILD.getCode(),
+                    ResultStatusCode.OPRATE_FAILD.getMsg());
+        }
+        return response;
+    }
+
+    @Override
+    public BaseResponse deleteDept(List<DeptRequest> deptRequests) {
+        BaseResponse response = null;
+        int num = sysDeptMapper.deleteDept(deptRequests);
         if (num > 0){
             response = new BaseResponse(ResultStatusCode.OK.getCode(),
                     ResultStatusCode.OK.getMsg(), num);
