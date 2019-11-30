@@ -56,9 +56,6 @@
       <if test="orderNum != null">
         order_num = #{orderNum,jdbcType=INTEGER},
       </if>
-      <if test="createBy != null">
-        create_by = #{createBy,jdbcType=VARCHAR},
-      </if>
       <if test="lastUpdateBy != null">
         last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
       </if>

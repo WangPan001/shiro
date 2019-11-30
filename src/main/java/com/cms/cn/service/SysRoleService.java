@@ -17,4 +17,9 @@ public interface SysRoleService {
 
     BaseResponse queryMenuByRoleId(RoleRequest roleRequest);
 
+    BaseResponse addRole(RoleRequest roleRequest);
+
+    BaseResponse updateRole(RoleRequest roleRequest);
+
+    BaseResponse deleteRole(RoleRequest roleRequest);
 }

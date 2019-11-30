@@ -45,11 +45,31 @@
     <if test="roleId != null and roleId != ''">
       and srm.role_id = #{roleId}
     </if>
-    <if test="parentId != null and parentId != ''">
-      and sm.parent_id = #{parentId}
-    </if>
-    <if test="type != null and type != ''">
-      and sm.type = #{type}
-    </if>
   </select>
+
+  <insert id="addRole" parameterType="com.cms.cn.model.request.RoleRequest">
+    insert into sys_role(name, remark, create_by, create_time, last_update_by, last_update_time)
+    values (#{name},#{remark},#{create_by},now(),#{last_update_by},now())
+  </insert>
+
+  <update id="updateRole" parameterType="com.cms.cn.model.request.RoleRequest">
+    update sys_role
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      now(),
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      now(),
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{roleId,jdbcType=INTEGER}
+  </update>
 </mapper>

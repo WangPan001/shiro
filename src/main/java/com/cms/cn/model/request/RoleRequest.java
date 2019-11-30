@@ -20,6 +20,16 @@ public class RoleRequest implements Serializable {
 
     private String type;
 
+    private String name;
+
+    private String remark;
+
+    private String create_by;
+
+    private String last_update_by;
+
+    private String del_flag;
+
     private Integer pageSize = 0;
 
     private Integer pageNum = 0;

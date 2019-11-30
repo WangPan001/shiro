@@ -8,11 +8,6 @@ import com.cms.cn.model.response.RoleResponse;
 import java.util.List;
 
 public interface SysRoleMapper {
-//    int deleteByPrimaryKey(Integer id);
-//
-//    int insert(SysRole record);
-//
-//    int insertSelective(SysRole record);
 
     List<RoleResponse> selectRole(RoleRequest roleRequest);
 
@@ -20,7 +15,8 @@ public interface SysRoleMapper {
 
     List<MenusResponse> queryMenuByRoleId(RoleRequest roleRequest);
 
-//    int updateByPrimaryKeySelective(SysRole record);
-//
-//    int updateByPrimaryKey(SysRole record);
+    int addRole(RoleRequest roleRequest);
+
+    int updateRole(RoleRequest roleRequest);
+
 }

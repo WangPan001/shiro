@@ -94,6 +94,9 @@
       <if test="dept_id != null">
         dept_id = #{dept_id},
       </if>
+      <if test="last_update_by != null">
+        last_update_by = #{last_update_by},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>

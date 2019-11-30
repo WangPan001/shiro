@@ -37,4 +37,25 @@ public class RoleController {
     public BaseResponse queryMenuByRoleId(@RequestBody RoleRequest roleRequest) {
         return sysRoleService.queryMenuByRoleId(roleRequest);
     }
+
+    @RequiresPermissions("sys:role:add")
+    @RequestMapping("/add")
+    @ResponseBody
+    public BaseResponse addRole(@RequestBody RoleRequest roleRequest) {
+        return sysRoleService.addRole(roleRequest);
+    }
+
+    @RequiresPermissions("sys:role:edit")
+    @RequestMapping("/edit")
+    @ResponseBody
+    public BaseResponse updateRole(@RequestBody RoleRequest roleRequest) {
+        return sysRoleService.updateRole(roleRequest);
+    }
+
+    @RequiresPermissions("sys:role:delete")
+    @RequestMapping("/delete")
+    @ResponseBody
+    public BaseResponse deleteRole(@RequestBody RoleRequest roleRequest) {
+        return sysRoleService.deleteRole(roleRequest);
+    }
 }
